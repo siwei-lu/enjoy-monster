@@ -1,6 +1,6 @@
 {
   "name": "enjoy-monster",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A GraphQL extension library which implement both query and mutation.",
   "main": "dist/index.js",
   "scripts": {
