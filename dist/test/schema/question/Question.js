@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
-const __1 = require("../../..");
 const GraphQLDateTime_1 = require("../../../extra/GraphQLDateTime");
-const Question = new __1.GraphQLObjectType({
+const Question = new graphql_1.GraphQLObjectType({
     description: '题目',
     name: 'Question',
     sqlTable: 'question',

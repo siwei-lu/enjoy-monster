@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
-const __1 = require("../../..");
-const Option = new __1.GraphQLObjectType({
+const Option = new graphql_1.GraphQLObjectType({
     description: '选项',
     name: 'Option',
     fields: () => ({

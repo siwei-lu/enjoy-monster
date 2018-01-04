@@ -1,5 +1,4 @@
-import { GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
-import { GraphQLObjectType } from '../../..';
+import { GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
 import GraphQLDateTime from '../../../extra/GraphQLDateTime';
 import Option from './Option';

@@ -1,6 +1,4 @@
-import { GraphQLString } from 'graphql';
-import { GraphQLObjectType } from '../../..';
-
+import { GraphQLString, GraphQLObjectType } from 'graphql';
 
 const Option = new GraphQLObjectType({
   description: '选项',

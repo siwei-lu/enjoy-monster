@@ -1,8 +1,8 @@
-import { GraphQLQueryType, GraphQLInsertType } from '../../..';
+import { GraphQLQueryType } from '../../..';
 declare const _default: {
-    query: GraphQLQueryType;
-    mutation: {
-        createQuestion: GraphQLInsertType;
+    query: {
+        question: GraphQLQueryType;
+        questions: GraphQLQueryType;
     };
 };
 export default _default;

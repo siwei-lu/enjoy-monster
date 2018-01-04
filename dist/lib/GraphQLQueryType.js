@@ -1,23 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sqlstring_1 = require("sqlstring");
+const join_monster_1 = require("join-monster");
 const graphql_1 = require("graphql");
+const resolve = (parent, args, context, resolveInfo) => {
+    return join_monster_1.default(resolveInfo, context, async (sql) => (await context.knex.raw(sql))[0], { dialect: 'mysql' });
+};
 class GraphQLQueryType {
-    constructor(query) {
-        this.injectWhere(query);
-        this.query = query;
+    constructor(type, args) {
+        const defaultArgs = this.args(type);
+        this.__type = type;
+        this.__args = args ? args(defaultArgs) : defaultArgs;
+        this.__where = this.where(this.__args);
+        this.__resolve = resolve;
     }
-    injectWhere(toQuery) {
-        Object.keys(toQuery).map(key => {
-            const value = toQuery[key];
-            const type = value.type instanceof graphql_1.GraphQLList
-                ? value.type.ofType
-                : value.type;
-            const args = type.args;
-            const where = this.where(args);
-            value.args = args;
-            value.where = where;
-        });
+    args(ofType) {
+        const current = ofType instanceof graphql_1.GraphQLList ? ofType.ofType : ofType;
+        if (current instanceof graphql_1.GraphQLScalarType)
+            return {};
+        return Object
+            .entries(current.getFields())
+            .filter(([_, field]) => field.isArg)
+            .reduce((args, [name, field]) => (Object.assign({}, args, { [name]: { type: field.type } })), {});
     }
     where(withArgs) {
         return (table, params) => {
@@ -45,8 +49,13 @@ class GraphQLQueryType {
             return clause;
         };
     }
-    static combined(...withQueries) {
-        return new GraphQLQueryType(withQueries.reduce((combined, { query }) => (Object.assign({}, combined, query)), {}));
+    toObject() {
+        return {
+            type: this.__type,
+            args: this.__args,
+            where: this.__where,
+            resolve: this.__resolve
+        };
     }
 }
 exports.default = GraphQLQueryType;

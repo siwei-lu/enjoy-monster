@@ -3,7 +3,7 @@ import { GraphQLList } from 'graphql';
 
 import { GraphQLQueryType } from '../../..'
 
-export default new GraphQLQueryType({
-  question: { type: Question },
-  questions: { type: new GraphQLList(Question) }
-})
+export default {
+  question: new GraphQLQueryType(Question),
+  questions: new GraphQLQueryType(new GraphQLList(Question))
+}

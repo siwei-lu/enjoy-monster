@@ -1,3 +1,2 @@
-import { GraphQLObjectType } from '../../..';
-declare const Question: GraphQLObjectType;
+declare const Question: any;
 export default Question;

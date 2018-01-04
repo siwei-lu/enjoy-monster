@@ -1,45 +1,49 @@
 import { escape } from 'sqlstring';
 import joinMonster from 'join-monster';
+import * as Knex from 'knex';
 
-import { GraphQLObjectType, GraphQLFieldResolver, GraphQLFieldMap,
-  GraphQLScalarType,
-  GraphQLObjectTypeConfig, GraphQLList } from 'graphql';
-import { resolve } from 'path';
-import { arch, type } from 'os';
+import {
+  GraphQLObjectType, GraphQLFieldResolver, GraphQLFieldMap,
+  GraphQLScalarType, GraphQLObjectTypeConfig, GraphQLList,
+  GraphQLResolveInfo
+} from 'graphql';
 
-export type GraphQLQueryTypeConfig = {
-  [ key: string ]: {
-    type: GraphQLObjectType | GraphQLList<GraphQLObjectType>,
-    args?: { [ name: string ]: {
-      where?: { table: string, args: { [ name: string ]: any }, context: any },
-      resolve?: GraphQLFieldResolver<any, any>
-    } },
-    // orderBy?: { [ name: string ]: 'asc' | 'desc' },
-  }
-}
+export type QueryType = GraphQLScalarType | GraphQLObjectType | GraphQLList<GraphQLObjectType>;
+export type ArgumentType = { [name: string]: QueryType };
+export type WhereType = (talbe: string, args: {}, context: any) => string;
+export type ResolveType = (parent: any, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => any;
+
+const resolve = (parent: any, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => {
+  return joinMonster(resolveInfo, context, async sql => (await context.knex.raw(sql))[0],
+  { dialect: 'mysql' });
+};
 
 export default class GraphQLQueryType {
-  query: any;
+  private __type: QueryType;
+  private __where: WhereType;
+  private __args: ArgumentType;
+  private __resolve: ResolveType
 
-  constructor(query: GraphQLQueryTypeConfig) {
-    this.injectWhere(query);
-    this.query = query;
+  constructor(type: QueryType, args?: (defaultArgs: ArgumentType) => ArgumentType) {
+    const defaultArgs = this.args(type);
+
+    this.__type = type;
+    this.__args = args ? args(defaultArgs) : defaultArgs;
+    this.__where = this.where(this.__args);
+    this.__resolve = resolve;
   }
 
-  injectWhere(toQuery: GraphQLQueryTypeConfig) {
-    Object.keys(toQuery).map(key => {
-      const value: any = toQuery[key];
-      
-      const type = value.type instanceof GraphQLList
-        ? value.type.ofType
-        : value.type;
+  args(ofType: QueryType) {
+    const current = ofType instanceof GraphQLList ? ofType.ofType : ofType;
 
-      const args = type.args;
-      const where = this.where(args);
+    if (current instanceof GraphQLScalarType) return {};
 
-      value.args = args;
-      value.where = where;
-    })
+    return Object
+      .entries<any>(current.getFields())
+      .filter(([_, field]) => field.isArg)
+      .reduce((args, [name, field]) => ({
+        ...args, [name]: { type: field.type }
+      }), {});
   }
 
   where(withArgs: any) {
@@ -71,11 +75,12 @@ export default class GraphQLQueryType {
     }
   }
 
-  
-
-  static combined(...withQueries: GraphQLQueryType[]) {
-    return new GraphQLQueryType(withQueries.reduce((combined, { query }) => ({
-      ...combined, ...query
-    }), {}));
+  toObject() {
+    return {
+      type: this.__type,
+      args: this.__args,
+      where: this.__where,
+      resolve: this.__resolve
+    }
   }
 }
