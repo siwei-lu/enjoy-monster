@@ -21,7 +21,7 @@ class GraphQLQueryType {
         return Object
             .entries(current.getFields())
             .filter(([_, field]) => field.isArg)
-            .reduce((args, [name, field]) => (Object.assign({}, args, { [name]: { type: field.type } })), {});
+            .reduce((args, [name, field]) => (Object.assign({}, args, { [name]: { type: field.type, sqlColumn: field.sqlColumn } })), {});
     }
     where(withArgs) {
         return (table, params) => {
