@@ -42,7 +42,7 @@ export default class GraphQLQueryType {
       .entries<any>(current.getFields())
       .filter(([_, field]) => field.isArg)
       .reduce((args, [name, field]) => ({
-        ...args, [name]: { type: field.type }
+        ...args, [name]: { type: field.type, sqlColumn: field.sqlColumn }
       }), {});
   }
 
