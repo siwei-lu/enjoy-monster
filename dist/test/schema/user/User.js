@@ -15,7 +15,7 @@ const User = new graphql_1.GraphQLObjectType({
         questions: __1.hasMany(Question_1.default, {
             thisKey: 'id',
             foreignKey: 'create_user',
-            description: '试题'
+            description: '题目'
         }),
         createTime: {
             type: GraphQLDateTime_1.default,

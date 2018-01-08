@@ -12,10 +12,11 @@ const User = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLInt, isArg: true },
     name: { type: new GraphQLNonNull(GraphQLString) },
+
     questions: hasMany(Question, {
       thisKey: 'id',
       foreignKey: 'create_user',
-      description: '试题'
+      description: '题目'
     }),
 
     createTime: {

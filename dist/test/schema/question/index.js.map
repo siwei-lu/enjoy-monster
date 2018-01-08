@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../test/schema/question/index.ts"],"names":[],"mappings":";;AAEA,mCAA4B;AAE5B,kBAAe;IACb,KAAK,EAAL,eAAK;CACN,CAAC"}
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../test/schema/question/index.ts"],"names":[],"mappings":";;AAEA,mCAA4B;AAC5B,yCAAkC;AAElC,kBAAe;IACb,KAAK,EAAL,eAAK,EAAE,QAAQ,EAAR,kBAAQ;CAChB,CAAC"}

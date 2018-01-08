@@ -1,11 +1,12 @@
-// import { GraphQLList } from 'graphql';
-// import { GraphQLInsertType } from '../../..';
-// import Question from './Question';
-// export default {
-//   createQuestion: new GraphQLInsertType({
-//     name: 'question',
-//     description: 'test',
-//     type: Question
-//   })
-// } 
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = require("../../..");
+const Question_1 = require("./Question");
+exports.default = {
+    createQuestion: new __1.GraphQLInsertType({
+        name: 'question',
+        description: 'test',
+        type: Question_1.default
+    })
+};
 //# sourceMappingURL=mutation.js.map

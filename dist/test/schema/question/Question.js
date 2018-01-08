@@ -45,6 +45,7 @@ const Question = new graphql_1.GraphQLObjectType({
             description: '选择题选项',
             sqlColumn: 'options',
             resolve: question => question.options && JSON.parse(question.options),
+            handle: options => JSON.stringify(options)
         },
         createType: {
             type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLInt),

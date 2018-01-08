@@ -1,1 +1,1 @@
-{"version":3,"file":"mutation.js","sourceRoot":"","sources":["../../../../test/schema/question/mutation.ts"],"names":[],"mappings":"AAAA,yCAAyC;AACzC,gDAAgD;AAChD,qCAAqC;AAErC,mBAAmB;AACnB,4CAA4C;AAC5C,wBAAwB;AACxB,2BAA2B;AAC3B,qBAAqB;AACrB,OAAO;AACP,IAAI"}
+{"version":3,"file":"mutation.js","sourceRoot":"","sources":["../../../../test/schema/question/mutation.ts"],"names":[],"mappings":";;AACA,gCAA6C;AAC7C,yCAAkC;AAElC,kBAAe;IACb,cAAc,EAAE,IAAI,qBAAiB,CAAC;QACpC,IAAI,EAAE,UAAU;QAChB,WAAW,EAAE,MAAM;QACnB,IAAI,EAAE,kBAAQ;KACf,CAAC;CACH,CAAA"}
