@@ -5,7 +5,8 @@ import * as Knex from 'knex';
 import {
   GraphQLObjectType, GraphQLFieldResolver, GraphQLFieldMap,
   GraphQLScalarType, GraphQLObjectTypeConfig, GraphQLList,
-  GraphQLResolveInfo
+  GraphQLResolveInfo,
+  GraphQLNonNull
 } from 'graphql';
 
 export type QueryType = GraphQLScalarType | GraphQLObjectType | GraphQLList<GraphQLObjectType>;
@@ -22,7 +23,7 @@ export default class GraphQLQueryType {
   private __type: QueryType;
   private __where: WhereType;
   private __args: ArgumentType;
-  private __resolve: ResolveType
+  private __resolve: ResolveType;
 
   constructor(type: QueryType, args?: (defaultArgs: ArgumentType) => ArgumentType) {
     const defaultArgs = this.args(type);
@@ -42,7 +43,9 @@ export default class GraphQLQueryType {
       .entries<any>(current.getFields())
       .filter(([_, field]) => field.isArg)
       .reduce((args, [name, field]) => ({
-        ...args, [name]: { type: field.type, sqlColumn: field.sqlColumn }
+        ...args, [name]: {
+          type: field.type instanceof GraphQLNonNull ? field.type.ofType : field.type,
+          sqlColumn: field.sqlColumn }
       }), {});
   }
 

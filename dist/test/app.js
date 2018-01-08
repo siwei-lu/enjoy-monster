@@ -21,3 +21,4 @@ router.get('/graphiql', graphql_server_koa_1.graphiqlKoa({ endpointURL: '/graphq
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.listen(PORT);
+//# sourceMappingURL=app.js.map

@@ -10,3 +10,4 @@ const Option = new graphql_1.GraphQLObjectType({
     })
 });
 exports.default = Option;
+//# sourceMappingURL=Option.js.map

@@ -7,3 +7,4 @@ exports.default = {
     question: new __1.GraphQLQueryType(Question_1.default),
     questions: new __1.GraphQLQueryType(new graphql_1.GraphQLList(Question_1.default))
 };
+//# sourceMappingURL=query.js.map

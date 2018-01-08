@@ -2,7 +2,8 @@ import { GraphQLList, GraphQLNonNull, GraphQLInt, GraphQLScalarType } from 'grap
 import { GraphQLQueryType } from '../..';
 
 import question from './question';
+import user from './user';
 
 export default {
-  query: { ...question.query }
+  query: { ...question.query, ...user.query }
 }

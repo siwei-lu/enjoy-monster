@@ -2,6 +2,8 @@ import { GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull, GraphQLObjectTy
 
 import GraphQLDateTime from '../../../extra/GraphQLDateTime';
 import Option from './Option';
+import { hasOne } from '../../..';
+import User from '../user/User';
 
 const Question = new GraphQLObjectType({
   description: '题目',
@@ -42,24 +44,23 @@ const Question = new GraphQLObjectType({
       isArg: true
     },
 
-    // options: {
-    //   type: new GraphQLList(Option),
-    //   description: '选择题选项',
-    //   sqlColumn: 'options',
-    //   resolve: question => question.options && JSON.parse(question.options),
-    // },
+    options: {
+      type: new GraphQLList(Option),
+      description: '选择题选项',
+      sqlColumn: 'options',
+      resolve: question => question.options && JSON.parse(question.options),
+    },
 
     createType: {
       type: new GraphQLNonNull(GraphQLInt),
       sqlColumn: 'create_type',
       description: '创建类型 0: 文档解析, 1: 人工录入',
     },
-    createUser: {
-      type: new GraphQLNonNull(GraphQLInt),
-      sqlColumn: 'create_user',
-      description: '创建用户 ID',
-      isArg: true
-    },
+    createUser: hasOne(User, {
+      thisKey: 'create_user',
+      foreignKey: 'id',
+      description: '创建人' 
+    }),
 
     createTime: {
       type: GraphQLDateTime,

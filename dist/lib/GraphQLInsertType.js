@@ -56,3 +56,4 @@
 //     return result;
 //   }
 // } 
+//# sourceMappingURL=GraphQLInsertType.js.map

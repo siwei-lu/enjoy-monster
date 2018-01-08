@@ -5,3 +5,4 @@ class GraphQLOperationType {
     }
 }
 exports.default = GraphQLOperationType;
+//# sourceMappingURL=GraphQLOperationType.js.map

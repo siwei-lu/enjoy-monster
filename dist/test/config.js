@@ -16,3 +16,4 @@ exports.database = {
         idleTimeoutMillis: 120000,
     },
 };
+//# sourceMappingURL=config.js.map

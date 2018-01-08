@@ -1,0 +1,1 @@
+{"version":3,"file":"query.js","sourceRoot":"","sources":["../../../../test/schema/question/query.ts"],"names":[],"mappings":";;AAAA,yCAAkC;AAClC,qCAAsC;AAEtC,gCAA2C;AAE3C,kBAAe;IACb,QAAQ,EAAE,IAAI,oBAAgB,CAAC,kBAAQ,CAAC;IACxC,SAAS,EAAE,IAAI,oBAAgB,CAAC,IAAI,qBAAW,CAAC,kBAAQ,CAAC,CAAC;CAC3D,CAAA"}
