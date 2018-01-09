@@ -7,12 +7,10 @@ export declare type RelationConfig = {
 export declare const hasOne: (type: GraphQLObjectType, config: RelationConfig) => {
     type: any;
     description: string;
-    args: any;
     sqlJoin: (fromTable: string, toTable: string) => string;
 };
 export declare const hasMany: (type: GraphQLObjectType, config: RelationConfig) => {
     type: any;
     description: string;
-    args: any;
     sqlJoin: (fromTable: string, toTable: string) => string;
 };

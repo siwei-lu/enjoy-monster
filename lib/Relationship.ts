@@ -1,5 +1,4 @@
 import { GraphQLObjectType, GraphQLList } from 'graphql';
-import argsUtil from '../util/args';
 
 export type RelationConfig = {
   thisKey: string,
@@ -10,7 +9,6 @@ export type RelationConfig = {
 const relation = (withType: any, config: RelationConfig) => ({
   type: withType,  
   description: config.description || '',
-  args: argsUtil.of(withType),
   sqlJoin: (fromTable: string, toTable: string) =>
     `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`
 });
