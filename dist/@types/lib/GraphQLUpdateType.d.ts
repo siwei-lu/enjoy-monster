@@ -9,6 +9,7 @@ export declare type GraphQLUpdateTypeConfig = {
 export default class GraphQLUpdateType {
     private __name;
     private __type;
+    private __description;
     private __originType;
     private __args;
     private __sqlTable;
@@ -20,6 +21,7 @@ export default class GraphQLUpdateType {
         name: string;
         type: GraphQLScalarType;
         args: ArgumentType;
+        description: string;
         resolve: (value: any, {newValue, ...args}: {
             [x: string]: any;
             newValue: any;

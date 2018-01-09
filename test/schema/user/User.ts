@@ -13,11 +13,11 @@ const User = new GraphQLObjectType({
     id: { type: GraphQLInt, isArg: true },
     name: { type: new GraphQLNonNull(GraphQLString) },
 
-    // questions: hasMany(Question, {
-    //   thisKey: 'id',
-    //   foreignKey: 'create_user',
-    //   description: '题目'
-    // }),
+    questions: hasMany(Question, {
+      thisKey: 'id',
+      foreignKey: 'create_user',
+      description: '题目'
+    }),
 
     createTime: {
       type: GraphQLDateTime,

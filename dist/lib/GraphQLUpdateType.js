@@ -22,6 +22,7 @@ class GraphQLUpdateType {
         };
         this.__name = config.name;
         this.__type = config.type;
+        this.__description = config.description;
         this.__args = (config.args || (e => e))(args_1.default.of(config.type));
         this.__originType = type_1.default.originalTypeOf(config.type);
         this.__sqlTable = this.__originType._typeConfig.sqlTable;
@@ -36,6 +37,7 @@ class GraphQLUpdateType {
             name: this.__name,
             type: graphql_1.GraphQLInt,
             args: this.__args,
+            description: this.__description,
             resolve: this.__resolve
         };
     }

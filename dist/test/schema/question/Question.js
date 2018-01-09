@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
 const GraphQLDateTime_1 = require("../../../extra/GraphQLDateTime");
 const Option_1 = require("./Option");
-const __1 = require("../../..");
-const User_1 = require("../user/User");
 const Question = new graphql_1.GraphQLObjectType({
     description: '题目',
     name: 'Question',
@@ -52,11 +50,11 @@ const Question = new graphql_1.GraphQLObjectType({
             sqlColumn: 'create_type',
             description: '创建类型 0: 文档解析, 1: 人工录入',
         },
-        createUser: __1.hasOne(User_1.default, {
-            thisKey: 'create_user',
-            foreignKey: 'id',
-            description: '创建人'
-        }),
+        // createUser: hasOne(User, {
+        //   thisKey: 'create_user',
+        //   foreignKey: 'id',
+        //   description: '创建人' 
+        // }),
         createTime: {
             type: GraphQLDateTime_1.default,
             sqlColumn: 'create_time',

@@ -13,6 +13,7 @@ export type GraphQLUpdateTypeConfig = {
 export default class GraphQLUpdateType {
   private __name: string;
   private __type: GraphQLObjectType | GraphQLList<GraphQLObjectType>;
+  private __description: string;
   private __originType: GraphQLObjectType & { _typeConfig: any };
   private __args: ArgumentType;
   private __sqlTable: string;
@@ -25,6 +26,7 @@ export default class GraphQLUpdateType {
   constructor(config: GraphQLUpdateTypeConfig) {
     this.__name = config.name;
     this.__type = config.type;
+    this.__description = config.description;
     this.__args = (config.args || (e => e))(argsUtil.of(config.type));
 
     this.__originType = typeUtil.originalTypeOf(config.type);
@@ -45,6 +47,7 @@ export default class GraphQLUpdateType {
       name: this.__name,
       type: GraphQLInt,
       args: this.__args,
+      description: this.__description,
       resolve: this.__resolve
     }
   }
