@@ -6,11 +6,13 @@ import {
   GraphQLObjectType, GraphQLFieldResolver, GraphQLFieldMap,
   GraphQLScalarType, GraphQLObjectTypeConfig, GraphQLList,
   GraphQLResolveInfo,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLOutputType
 } from 'graphql';
 
-export type QueryType = GraphQLScalarType | GraphQLObjectType | GraphQLList<GraphQLObjectType>;
-export type ArgumentType = { [name: string]: QueryType };
+import argsUtil, { ArgumentType } from '../util/args';
+
+
 export type WhereType = (talbe: string, args: {}, context: any) => string;
 export type ResolveType = (parent: any, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => any;
 
@@ -20,33 +22,16 @@ const resolve = (parent: any, args: ArgumentType, context: any, resolveInfo: Gra
 };
 
 export default class GraphQLQueryType {
-  private __type: QueryType;
+  private __type: GraphQLOutputType;
   private __where: WhereType;
   private __args: ArgumentType;
   private __resolve: ResolveType;
 
-  constructor(type: QueryType, args?: (defaultArgs: ArgumentType) => ArgumentType) {
-    const defaultArgs = this.args(type);
-
+  constructor(type: GraphQLOutputType, args = (args: ArgumentType) => args) {
     this.__type = type;
-    this.__args = args ? args(defaultArgs) : defaultArgs;
+    this.__args = args(argsUtil.of(type));
     this.__where = this.where(this.__args);
     this.__resolve = resolve;
-  }
-
-  args(ofType: QueryType) {
-    const current = ofType instanceof GraphQLList ? ofType.ofType : ofType;
-
-    if (current instanceof GraphQLScalarType) return {};
-
-    return Object
-      .entries<any>(current.getFields())
-      .filter(([_, field]) => field.isArg)
-      .reduce((args, [name, field]) => ({
-        ...args, [name]: {
-          type: field.type instanceof GraphQLNonNull ? field.type.ofType : field.type,
-          sqlColumn: field.sqlColumn }
-      }), {});
   }
 
   where(withArgs: any) {

@@ -3,15 +3,7 @@ import { GraphQLSchema, GraphQLFieldMap, GraphQLObjectType, GraphQLList, GraphQL
 import joinMonster from 'join-monster';
 import GraphQLQueryType from './lib/GraphQLQueryType';
 import GraphQLInsertType from './lib/GraphQLInsertType';
-
-// const addCounter = (toQuery: { [name: string]: GraphQLQueryType }) => {
-//   Object.entries(toQuery).forEach(([name, field]) => {
-//     if (!(field.type instanceof GraphQLList)) return true;
-
-//     toQuery[`${name}__count`] = new GraphQLQueryType({ ...GraphQLInt, sqlTable: field., 
-//       () => field.arguments);
-//   })
-// };
+import GraphQLUpdateType from './lib/GraphQLUpdateType';
 
 const rootQuery = (ofQuery: { [name: string]: GraphQLQueryType }) =>
   new GraphQLObjectType({
@@ -21,7 +13,7 @@ const rootQuery = (ofQuery: { [name: string]: GraphQLQueryType }) =>
     }), {})
   });
 
-const rootMutation = (ofMutation: { [name: string]: GraphQLInsertType }) =>
+const rootMutation = (ofMutation: { [name: string]: GraphQLInsertType | GraphQLUpdateType  }) =>
   new GraphQLObjectType({
     name: 'RootMutation',
     fields: () => Object.entries(ofMutation).reduce((fields, [name, field]) => ({
@@ -46,6 +38,6 @@ export default function (schema: any, description = 'Powered by EnjoyMonster') {
   return new GraphQLSchema({ query, mutation, description });
 }
 
-export { GraphQLQueryType, GraphQLInsertType }
+export { GraphQLQueryType, GraphQLInsertType, GraphQLUpdateType }
 
 export * from './lib/Relationship';

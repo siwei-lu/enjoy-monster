@@ -4,7 +4,6 @@ import GraphQLDateTime from '../../../extra/GraphQLDateTime';
 import Option from './Option';
 import { hasOne } from '../../..';
 import User from '../user/User';
-import { open } from 'fs';
 
 const Question = new GraphQLObjectType({
   description: '题目',

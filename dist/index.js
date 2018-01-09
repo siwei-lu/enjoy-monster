@@ -8,13 +8,8 @@ const GraphQLQueryType_1 = require("./lib/GraphQLQueryType");
 exports.GraphQLQueryType = GraphQLQueryType_1.default;
 const GraphQLInsertType_1 = require("./lib/GraphQLInsertType");
 exports.GraphQLInsertType = GraphQLInsertType_1.default;
-// const addCounter = (toQuery: { [name: string]: GraphQLQueryType }) => {
-//   Object.entries(toQuery).forEach(([name, field]) => {
-//     if (!(field.type instanceof GraphQLList)) return true;
-//     toQuery[`${name}__count`] = new GraphQLQueryType({ ...GraphQLInt, sqlTable: field., 
-//       () => field.arguments);
-//   })
-// };
+const GraphQLUpdateType_1 = require("./lib/GraphQLUpdateType");
+exports.GraphQLUpdateType = GraphQLUpdateType_1.default;
 const rootQuery = (ofQuery) => new graphql_1.GraphQLObjectType({
     name: 'RootQuery',
     fields: () => Object.entries(ofQuery).reduce((fields, [name, field]) => (Object.assign({}, fields, { [name]: field.toObject() })), {})
