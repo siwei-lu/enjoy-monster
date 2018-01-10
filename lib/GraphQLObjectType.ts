@@ -13,6 +13,7 @@ export type GraphQLObjectTypeConfig = ObjectTypeConfig<any, any> & {
 export default class GraphQLObjectType extends ObjectType {
   protected _typeConfig;
   protected _fields;
+  
   private __args;
   private __isRelationComposed = false;
 

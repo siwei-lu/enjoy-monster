@@ -19,6 +19,13 @@ export const hasMany = (type: GraphQLObjectType, config: RelationConfig) => ({
   type: new GraphQLList(type),  
   description: config.description || '',
   args: argsUtil.of(type),
-  sqlJoin: (fromTable: string, toTable: string) =>
-    `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`
+  sqlJoin: (fromTable, toTable, args) => {
+    let clause = `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`;
+
+    Object.entries(args).forEach(([key, value]) => {
+      clause += ` and ${toTable}.${key} = ${value}`;
+    })
+
+    return clause;
+  }
 })

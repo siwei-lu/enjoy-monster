@@ -14,5 +14,5 @@ export declare const hasMany: (type: GraphQLObjectType, config: RelationConfig) 
     type: GraphQLList<GraphQLObjectType>;
     description: string;
     args: any;
-    sqlJoin: (fromTable: string, toTable: string) => string;
+    sqlJoin: (fromTable: any, toTable: any, args: any) => string;
 };
