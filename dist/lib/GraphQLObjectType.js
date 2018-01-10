@@ -4,6 +4,7 @@ const graphql_1 = require("graphql");
 class GraphQLObjectType extends graphql_1.GraphQLObjectType {
     constructor(config) {
         super(config);
+        this.__isRelationComposed = false;
     }
     get args() {
         if (!this.__args) {
@@ -22,15 +23,15 @@ class GraphQLObjectType extends graphql_1.GraphQLObjectType {
      *  使用 Proxy 代理 this 的值
      */
     getFields() {
-        if (this._fields) {
-            return this._fields;
-        }
         const { fields, relations } = this._typeConfig;
-        const composed = relations ? Object.assign({}, fields(), relations()) : fields();
+        if (this.__isRelationComposed || !relations) {
+            return super.getFields();
+        }
+        const compose = () => (Object.assign({}, fields(), relations()));
         const self = new Proxy(this, {
             get(target, key) {
                 if (key === '_typeConfig') {
-                    return Object.assign({}, target._typeConfig, { fields: composed });
+                    return Object.assign({}, target._typeConfig, { fields: compose });
                 }
             },
             set(target, key, value) {

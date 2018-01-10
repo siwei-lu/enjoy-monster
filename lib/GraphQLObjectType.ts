@@ -14,6 +14,7 @@ export default class GraphQLObjectType extends ObjectType {
   protected _typeConfig;
   protected _fields;
   private __args;
+  private __isRelationComposed = false;
 
   constructor(config: GraphQLObjectTypeConfig) {
     super(config);
@@ -40,19 +41,20 @@ export default class GraphQLObjectType extends ObjectType {
    *  使用 Proxy 代理 this 的值
    */
   getFields() {
-    if (this._fields) {
-      return this._fields;
+    const { fields, relations } = this._typeConfig;
+
+    if (this.__isRelationComposed || !relations) {
+      return super.getFields();
     }
 
-    const { fields, relations } = this._typeConfig;
-    const composed = relations ? { ...fields(), ...relations() } : fields();
+    const compose = () => ({ ...fields(), ...relations() });
 
     const self = new Proxy(this, {
       get(target, key) {
         if (key === '_typeConfig') {
           return {
             ...target._typeConfig,
-            fields: composed
+            fields: compose
           }
         }
       },

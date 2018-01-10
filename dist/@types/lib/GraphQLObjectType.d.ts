@@ -8,6 +8,7 @@ export default class GraphQLObjectType extends ObjectType {
     protected _typeConfig: any;
     protected _fields: any;
     private __args;
+    private __isRelationComposed;
     constructor(config: GraphQLObjectTypeConfig);
     readonly args: any;
     /** 重载 GraphQLObjectType 的 getFields 方法
