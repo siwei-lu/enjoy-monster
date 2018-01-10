@@ -10,24 +10,18 @@ const GraphQLInsertType_1 = require("./lib/GraphQLInsertType");
 exports.GraphQLInsertType = GraphQLInsertType_1.default;
 const GraphQLUpdateType_1 = require("./lib/GraphQLUpdateType");
 exports.GraphQLUpdateType = GraphQLUpdateType_1.default;
-const rootQuery = (ofQuery) => new graphql_1.GraphQLObjectType({
+const GraphQLObjectType_1 = require("./lib/GraphQLObjectType");
+exports.GraphQLObjectType = GraphQLObjectType_1.default;
+const rootQuery = (ofQuery) => new GraphQLObjectType_1.default({
     name: 'RootQuery',
-    fields: () => Object.entries(ofQuery).reduce((fields, [name, field]) => (Object.assign({}, fields, { [name]: field.toObject() })), {})
+    fields: () => Object
+        .entries(ofQuery)
+        .reduce((fields, [name, field]) => (Object.assign({}, fields, { [name]: field.toObject() })), {})
 });
-const rootMutation = (ofMutation) => new graphql_1.GraphQLObjectType({
+const rootMutation = (ofMutation) => new GraphQLObjectType_1.default({
     name: 'RootMutation',
     fields: () => Object.entries(ofMutation).reduce((fields, [name, field]) => (Object.assign({}, fields, { [name]: field.toObject() })), {})
 });
-// function rootMutation(ofMutaion, withKnex: Knex) {
-//   const test = Object.entries(ofMutaion)
-//   .reduce((field, [name, mutation]) => ({
-//     ...field, [name]: mutation.toObject(withKnex)
-//   }), {});
-//   return new GraphQLObjectType({
-//     name: 'RootMutation',
-//     fields: () => test 
-//   });
-// }
 function default_1(schema, description = 'Powered by EnjoyMonster') {
     ;
     const query = rootQuery(schema.query);
@@ -36,4 +30,5 @@ function default_1(schema, description = 'Powered by EnjoyMonster') {
 }
 exports.default = default_1;
 __export(require("./lib/Relationship"));
+__export(require("./lib/GraphQLObjectType"));
 //# sourceMappingURL=index.js.map

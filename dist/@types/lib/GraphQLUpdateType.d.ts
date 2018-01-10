@@ -14,7 +14,7 @@ export default class GraphQLUpdateType {
     private __args;
     private __sqlTable;
     private __fields;
-    private __injectNewValueToArgs();
+    private __newValueWith(args);
     constructor(config: GraphQLUpdateTypeConfig);
     private __resolve;
     toObject(): {

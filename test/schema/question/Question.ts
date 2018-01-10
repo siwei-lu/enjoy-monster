@@ -1,8 +1,8 @@
-import { GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
 
 import GraphQLDateTime from '../../../extra/GraphQLDateTime';
 import Option from './Option';
-import { hasOne } from '../../..';
+import { hasOne, GraphQLObjectType } from '../../..';
 import User from '../user/User';
 
 const Question = new GraphQLObjectType({
@@ -57,11 +57,6 @@ const Question = new GraphQLObjectType({
       sqlColumn: 'create_type',
       description: '创建类型 0: 文档解析, 1: 人工录入',
     },
-    // createUser: hasOne(User, {
-    //   thisKey: 'create_user',
-    //   foreignKey: 'id',
-    //   description: '创建人' 
-    // }),
 
     createTime: {
       type: GraphQLDateTime,
@@ -73,6 +68,14 @@ const Question = new GraphQLObjectType({
       sqlColumn: 'update_time',
       description: '更新时间',
     }
+  }),
+
+  relations: () => ({
+    createUser: hasOne(User, {
+      thisKey: 'create_user',
+      foreignKey: 'id',
+      description: '创建人' 
+    })
   })
 });
 

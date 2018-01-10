@@ -1,4 +1,5 @@
-import { GraphQLOutputType, GraphQLList, GraphQLObjectType, GraphQLNonNull, GraphQLFieldMap } from "graphql";
+import { GraphQLOutputType, GraphQLList, GraphQLNonNull, GraphQLFieldMap } from "graphql";
+import GraphQLObjectType from '../lib/GraphQLObjectType';
 
 export type ArgumentType = {
   [name: string]: {
@@ -8,23 +9,13 @@ export type ArgumentType = {
 };
 
 export class Args {
-  of (type: GraphQLOutputType) {
+  of(type: GraphQLOutputType) {
     if (type instanceof GraphQLList) {
       return this.of(type.ofType);
     }
 
     if (type instanceof GraphQLObjectType) {
-      return Object.entries<any>(type.getFields())
-        .filter(([, field]) => field.isArg)
-        .reduce((args, [name, field]) => ({
-          ...args,
-          [name]: {
-            sqlColumn: field.sqlColumn,
-            type: field.type instanceof GraphQLNonNull
-              ? field.type.ofType
-              : field.type
-          }
-        }), {});
+      return type.args;
     }
 
     return {};

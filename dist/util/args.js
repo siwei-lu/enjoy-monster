@@ -1,20 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
+const GraphQLObjectType_1 = require("../lib/GraphQLObjectType");
 class Args {
     of(type) {
         if (type instanceof graphql_1.GraphQLList) {
             return this.of(type.ofType);
         }
-        if (type instanceof graphql_1.GraphQLObjectType) {
-            return Object.entries(type.getFields())
-                .filter(([, field]) => field.isArg)
-                .reduce((args, [name, field]) => (Object.assign({}, args, { [name]: {
-                    sqlColumn: field.sqlColumn,
-                    type: field.type instanceof graphql_1.GraphQLNonNull
-                        ? field.type.ofType
-                        : field.type
-                } })), {});
+        if (type instanceof GraphQLObjectType_1.default) {
+            return type.args;
         }
         return {};
     }

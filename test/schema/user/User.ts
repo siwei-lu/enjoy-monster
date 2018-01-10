@@ -1,6 +1,6 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
 import GraphQLDateTime from '../../../extra/GraphQLDateTime';
-import { hasMany } from '../../..';
+import { hasMany, GraphQLObjectType } from '../../..';
 import Question from '../question/Question';
 
 const User = new GraphQLObjectType({
@@ -13,12 +13,6 @@ const User = new GraphQLObjectType({
     id: { type: GraphQLInt, isArg: true },
     name: { type: new GraphQLNonNull(GraphQLString) },
 
-    questions: hasMany(Question, {
-      thisKey: 'id',
-      foreignKey: 'create_user',
-      description: '题目'
-    }),
-
     createTime: {
       type: GraphQLDateTime,
       sqlColumn: 'create_time',
@@ -29,6 +23,14 @@ const User = new GraphQLObjectType({
       sqlColumn: 'update_time',
       description: '更新时间',
     }
+  }),
+
+  relations: () => ({
+    questions: hasMany(Question, {
+      thisKey: 'id',
+      foreignKey: 'create_user',
+      description: '题目'
+    })
   })
 });
 

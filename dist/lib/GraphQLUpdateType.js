@@ -23,14 +23,14 @@ class GraphQLUpdateType {
         this.__name = config.name;
         this.__type = config.type;
         this.__description = config.description;
-        this.__args = (config.args || (e => e))(args_1.default.of(config.type));
         this.__originType = type_1.default.originalTypeOf(config.type);
         this.__sqlTable = this.__originType._typeConfig.sqlTable;
         this.__fields = this.__originType.getFields();
-        this.__injectNewValueToArgs();
+        const args = (config.args || (e => e))(args_1.default.of(config.type));
+        this.__args = this.__newValueWith(args);
     }
-    __injectNewValueToArgs() {
-        this.__args.newValue = { type: type_1.default.inputTypeOf(this.__type, true) };
+    __newValueWith(args) {
+        return Object.assign({}, args, { newValue: { type: type_1.default.inputTypeOf(this.__type, true) } });
     }
     toObject() {
         return {

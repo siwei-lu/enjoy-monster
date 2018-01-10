@@ -4,7 +4,7 @@ const graphql_1 = require("graphql");
 const GraphQLDateTime_1 = require("../../../extra/GraphQLDateTime");
 const __1 = require("../../..");
 const Question_1 = require("../question/Question");
-const User = new graphql_1.GraphQLObjectType({
+const User = new __1.GraphQLObjectType({
     description: '用户',
     name: 'User',
     sqlTable: 'user',
@@ -12,11 +12,6 @@ const User = new graphql_1.GraphQLObjectType({
     fields: () => ({
         id: { type: graphql_1.GraphQLInt, isArg: true },
         name: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
-        questions: __1.hasMany(Question_1.default, {
-            thisKey: 'id',
-            foreignKey: 'create_user',
-            description: '题目'
-        }),
         createTime: {
             type: GraphQLDateTime_1.default,
             sqlColumn: 'create_time',
@@ -27,6 +22,13 @@ const User = new graphql_1.GraphQLObjectType({
             sqlColumn: 'update_time',
             description: '更新时间',
         }
+    }),
+    relations: () => ({
+        questions: __1.hasMany(Question_1.default, {
+            thisKey: 'id',
+            foreignKey: 'create_user',
+            description: '题目'
+        })
     })
 });
 exports.default = User;

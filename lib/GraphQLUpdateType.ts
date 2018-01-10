@@ -19,21 +19,24 @@ export default class GraphQLUpdateType {
   private __sqlTable: string;
   private __fields: any;
 
-  private __injectNewValueToArgs() {
-    this.__args.newValue = { type: typeUtil.inputTypeOf(this.__type, true) };
+  private __newValueWith(args: ArgumentType) {
+    return {
+      ...args,
+      newValue: { type: typeUtil.inputTypeOf(this.__type, true) }
+    }
   }
 
   constructor(config: GraphQLUpdateTypeConfig) {
     this.__name = config.name;
     this.__type = config.type;
     this.__description = config.description;
-    this.__args = (config.args || (e => e))(argsUtil.of(config.type));
 
     this.__originType = typeUtil.originalTypeOf(config.type);
     this.__sqlTable = this.__originType._typeConfig.sqlTable;
     this.__fields = this.__originType.getFields();
     
-    this.__injectNewValueToArgs();
+    const args = (config.args || (e => e))(argsUtil.of(config.type));    
+    this.__args = this.__newValueWith(args);
   }
 
   private __resolve = async (value, { newValue, ...args }, { knex }, info) => {

@@ -3,6 +3,7 @@
   "version": "1.4.1",
   "description": "A GraphQL extension library which implement both query and mutation.",
   "main": "dist/index.js",
+  "types": "dist/@types/index.d.ts",  
   "scripts": {
     "test": "node dist/test/app.js"
   },
