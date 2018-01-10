@@ -9,8 +9,7 @@
     "outDir": "dist"
   },
   "exclude": [
-    "node_modules",
-    "@types",
-    "dist"
+    "node_modules/**",
+    "dist/**",
   ]
 }

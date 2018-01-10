@@ -12,6 +12,8 @@ const GraphQLUpdateType_1 = require("./lib/GraphQLUpdateType");
 exports.GraphQLUpdateType = GraphQLUpdateType_1.default;
 const GraphQLObjectType_1 = require("./lib/GraphQLObjectType");
 exports.GraphQLObjectType = GraphQLObjectType_1.default;
+const GraphQLDateTime_1 = require("./extra/GraphQLDateTime");
+exports.GraphQLDateTime = GraphQLDateTime_1.default;
 const rootQuery = (ofQuery) => new GraphQLObjectType_1.default({
     name: 'RootQuery',
     fields: () => Object
