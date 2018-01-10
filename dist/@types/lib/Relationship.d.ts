@@ -6,13 +6,12 @@ export declare type RelationConfig = {
     description?: string;
 };
 export declare const hasOne: (type: GraphQLObjectType, config: RelationConfig) => {
-    type: GraphQLObjectType | GraphQLList<GraphQLObjectType>;
+    type: GraphQLObjectType;
     description: string;
-    args: any;
     sqlJoin: (fromTable: string, toTable: string) => string;
 };
 export declare const hasMany: (type: GraphQLObjectType, config: RelationConfig) => {
-    type: GraphQLObjectType | GraphQLList<GraphQLObjectType>;
+    type: GraphQLList<GraphQLObjectType>;
     description: string;
     args: any;
     sqlJoin: (fromTable: string, toTable: string) => string;

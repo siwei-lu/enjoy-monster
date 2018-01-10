@@ -6,10 +6,10 @@
     "declaration": true,
     "declarationDir": "dist/@types",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
   },
   "exclude": [
-    "node_modules/**",
-    "dist/**",
+    "node_modules",
+    "dist",
   ]
 }
