@@ -1,4 +1,4 @@
-import { GraphQLOutputType, GraphQLList, GraphQLNonNull, GraphQLFieldMap } from "graphql";
+import { GraphQLOutputType, GraphQLList, GraphQLNonNull, GraphQLFieldMap, GraphQLString, GraphQLScalarType } from "graphql";
 import GraphQLObjectType from '../lib/GraphQLObjectType';
 
 export type ArgumentType = {
@@ -11,7 +11,10 @@ export type ArgumentType = {
 export class Args {
   of(type: GraphQLOutputType) {
     if (type instanceof GraphQLList) {
-      return this.of(type.ofType);
+      return {
+        ...this.of(type.ofType),
+        ...this.sortArgs()        
+      }
     }
 
     if (type instanceof GraphQLObjectType) {
@@ -26,6 +29,17 @@ export class Args {
       .reduce((sqlArgs, [name, value]) => ({
         ...sqlArgs, [withFields[name].sqlColumn || name]: value
       }), {});
+  }
+
+  sortArgs() {
+    return {
+      __sort: {
+        type: GraphQLString,
+        resolve: (table, params) => {
+          return `ORDER BY ${params}`;
+        }
+      }
+    }
   }
 }
 

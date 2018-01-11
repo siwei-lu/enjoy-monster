@@ -37,19 +37,27 @@ export default class GraphQLQueryType {
   whereWith(args: any) {
     return (table, params) => {
       const conditions = {};
-      Object.keys(args).forEach(key => {
-        const val = params[key];
-        if (val === null || val === undefined) return true;
 
-        const sqlColumn = args[key].sqlColumn || key;
-        conditions[sqlColumn] = val;
-      })
+      const [resolver, condition] = Object.entries(params)
+        .reduce((sum, [key, value]) => {
+          if (args[key].resolve) {
+            sum[0].push({ key, value });
+          } else {
+            sum[1].push({ key, value });
+          }
+          return sum;
+        }, [[], []]);
+
+      condition.forEach(({ key, value }) => {
+        const { sqlColumn } = args(key);
+        conditions[sqlColumn || key] = value;
+      });
 
       let clause = '1=1';
 
       Object.keys(conditions).forEach(key => {
         const val = conditions[key];
-        if (val === null || val === undefined) return true;
+        if (val === null || val === undefined) return;
 
         if (val instanceof Array) {
           clause += ` and ${table}.${key} in ${escape(val)}`
@@ -58,8 +66,11 @@ export default class GraphQLQueryType {
         }
       });
 
-      clause += ';';
-      return clause;
+      resolver.forEach(({ key, value }) => {
+        clause += ` ${args[key].resolve(table, value)}`;
+      })
+
+      return clause + ';';
     }
   }
 }
