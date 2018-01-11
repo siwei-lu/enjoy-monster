@@ -14,5 +14,11 @@ export declare const hasMany: (type: GraphQLObjectType, config: RelationConfig) 
     type: GraphQLList<GraphQLObjectType>;
     description: string;
     args: any;
-    sqlJoin: (fromTable: any, toTable: any, args: any) => string;
+    orderBy: (args: any) => {
+        [x: number]: any;
+    };
+    sqlJoin: (fromTable: any, toTable: any, {__sort, ...args}: {
+        [x: string]: any;
+        __sort: any;
+    }) => string;
 };

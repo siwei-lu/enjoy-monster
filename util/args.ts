@@ -9,11 +9,22 @@ export type ArgumentType = {
 };
 
 export class Args {
+  get sortArg() {
+    return {
+      __sort: {
+        type: GraphQLString,
+        resolve: (table, params) => {
+          return `ORDER BY ${table}.${params}`;
+        }
+      }
+    }
+  }
+  
   of(type: GraphQLOutputType) {
     if (type instanceof GraphQLList) {
       return {
         ...this.of(type.ofType),
-        ...this.sortArgs()        
+        ...this.sortArg       
       }
     }
 
@@ -29,17 +40,6 @@ export class Args {
       .reduce((sqlArgs, [name, value]) => ({
         ...sqlArgs, [withFields[name].sqlColumn || name]: value
       }), {});
-  }
-
-  sortArgs() {
-    return {
-      __sort: {
-        type: GraphQLString,
-        resolve: (table, params) => {
-          return `ORDER BY ${params}`;
-        }
-      }
-    }
   }
 }
 

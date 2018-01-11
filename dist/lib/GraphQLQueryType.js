@@ -8,6 +8,11 @@ const resolve = (parent, args, context, resolveInfo) => {
 };
 class GraphQLQueryType {
     constructor(type, args = (args) => args) {
+        this.orderBy = (...props) => {
+            return {
+                id: 'DESC'
+            };
+        };
         this.type = type;
         this.args = args(args_1.default.of(type));
         this.where = this.whereWith(this.args);
@@ -45,7 +50,7 @@ class GraphQLQueryType {
             resolver.forEach(({ key, value }) => {
                 clause += ` ${args[key].resolve(table, value)}`;
             });
-            return clause + ';';
+            return clause;
         };
     }
 }

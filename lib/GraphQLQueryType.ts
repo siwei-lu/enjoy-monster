@@ -14,6 +14,7 @@ import argsUtil, { ArgumentType } from '../util/args';
 
 
 export type WhereType = (talbe: string, args: {}, context: any) => string;
+export type OrderByType = (args: any) => { [name: string]: 'DESC' | 'ASC'}
 export type ResolveType = (parent: any, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => any;
 
 const resolve = (parent: any, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => {
@@ -26,6 +27,11 @@ export default class GraphQLQueryType {
    where: WhereType;
    args: ArgumentType;
    resolve: ResolveType;
+   orderBy = (...props) => {
+     return {
+       id: 'DESC'
+     }
+   };
 
   constructor(type: GraphQLOutputType, args = (args: ArgumentType) => args) {
     this.type = type;
@@ -70,7 +76,7 @@ export default class GraphQLQueryType {
         clause += ` ${args[key].resolve(table, value)}`;
       })
 
-      return clause + ';';
+      return clause;
     }
   }
 }
