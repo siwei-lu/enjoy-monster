@@ -27,10 +27,13 @@ export default class GraphQLQueryType {
    where: WhereType;
    args: ArgumentType;
    resolve: ResolveType;
-   orderBy = (...props) => {
-     return {
-       id: 'DESC'
-     }
+   orderBy = args => {
+    if (!args.__sort) return null;
+
+    const [key, value] = args.__sort.split(' ');
+    return {
+      [key]: value.toUpperCase()
+    }
    };
 
   constructor(type: GraphQLOutputType, args = (args: ArgumentType) => args) {
