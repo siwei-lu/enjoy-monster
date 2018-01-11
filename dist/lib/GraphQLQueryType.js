@@ -8,11 +8,10 @@ const resolve = (parent, args, context, resolveInfo) => {
 };
 class GraphQLQueryType {
     constructor(type, args = (args) => args) {
-        this.__type = type;
-        this.__args = args(args_1.default.of(type));
-        this.__where = this.whereWith(this.__args);
-        this.__resolve = resolve;
-        this.__setEnumableGetter();
+        this.type = type;
+        this.args = args(args_1.default.of(type));
+        this.where = this.whereWith(this.args);
+        this.resolve = resolve;
     }
     whereWith(args) {
         return (table, params) => {
@@ -39,14 +38,6 @@ class GraphQLQueryType {
             clause += ';';
             return clause;
         };
-    }
-    __setEnumableGetter() {
-        const getters = ['type', 'where', 'args', 'resolve']
-            .reduce((sum, name) => (Object.assign({}, sum, { [name]: {
-                get() { return this[`__${name}`]; },
-                enumerable: true
-            } })), {});
-        Object.defineProperties(this, Object.assign({}, getters));
     }
 }
 exports.default = GraphQLQueryType;

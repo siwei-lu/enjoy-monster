@@ -22,18 +22,16 @@ const resolve = (parent: any, args: ArgumentType, context: any, resolveInfo: Gra
 };
 
 export default class GraphQLQueryType {
-  private __type: GraphQLOutputType;
-  private __where: WhereType;
-  private __args: ArgumentType;
-  private __resolve: ResolveType;
+   type: GraphQLOutputType;
+   where: WhereType;
+   args: ArgumentType;
+   resolve: ResolveType;
 
   constructor(type: GraphQLOutputType, args = (args: ArgumentType) => args) {
-    this.__type = type;
-    this.__args = args(argsUtil.of(type));
-    this.__where = this.whereWith(this.__args);
-    this.__resolve = resolve;
-
-    this.__setEnumableGetter();
+    this.type = type;
+    this.args = args(argsUtil.of(type));
+    this.where = this.whereWith(this.args);
+    this.resolve = resolve;
   }
 
   whereWith(args: any) {
@@ -63,17 +61,5 @@ export default class GraphQLQueryType {
       clause += ';';
       return clause;
     }
-  }
-
-  private __setEnumableGetter() {
-    const getters =['type', 'where', 'args', 'resolve']
-      .reduce((sum, name) => ({
-        ...sum,
-        [name]: {
-          get() { return this[`__${name}`]},
-          enumerable: true
-        }
-      }), {});
-    Object.defineProperties(this, { ...getters });
   }
 }
