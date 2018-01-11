@@ -26,7 +26,8 @@ function default_1(schema, description = 'Powered by EnjoyMonster') {
     ;
     const query = rootQueryOf(schema.query);
     const mutation = rootMutation(schema.mutation);
-    return new graphql_1.GraphQLSchema({ query, mutation, description });
+    const config = { query, mutation, description };
+    return new graphql_1.GraphQLSchema(config);
 }
 exports.default = default_1;
 __export(require("./lib/Relationship"));

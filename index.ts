@@ -25,7 +25,8 @@ const rootMutation = (ofMutation: { [name: string]: GraphQLInsertType | GraphQLU
 export default function (schema: any, description = 'Powered by EnjoyMonster') {;
   const query = rootQueryOf(schema.query);
   const mutation = rootMutation(schema.mutation);
-  return new GraphQLSchema({ query, mutation, description });
+  const config: any = { query, mutation, description };
+  return new GraphQLSchema(config);
 }
 
 export {

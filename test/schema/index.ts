@@ -1,5 +1,8 @@
 import { GraphQLList, GraphQLNonNull, GraphQLInt, GraphQLScalarType } from 'graphql';
-import { GraphQLQueryType, GraphQLInsertType } from '../..';
+
+import GraphQLQueryType from '../../lib/GraphQLQueryType';
+import GraphQLInsertType from '../../lib/GraphQLInsertType';
+import GraphQLUpdateType from '../../lib/GraphQLUpdateType';
 
 import question from './question';
 import user from './user';
