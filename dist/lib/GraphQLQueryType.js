@@ -8,9 +8,12 @@ const resolve = (parent, args, context, resolveInfo) => {
 };
 class GraphQLQueryType {
     constructor(type, args = (args) => args) {
-        this.orderBy = (...props) => {
+        this.orderBy = args => {
+            if (!args.__sort)
+                return null;
+            const [key, value] = args.__sort.split(' ');
             return {
-                id: 'DESC'
+                [key]: value.toUpperCase()
             };
         };
         this.type = type;

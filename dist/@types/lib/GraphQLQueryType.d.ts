@@ -10,8 +10,8 @@ export default class GraphQLQueryType {
     where: WhereType;
     args: ArgumentType;
     resolve: ResolveType;
-    orderBy: (...props: any[]) => {
-        id: string;
+    orderBy: (args: any) => {
+        [x: number]: any;
     };
     constructor(type: GraphQLOutputType, args?: (args: ArgumentType) => ArgumentType);
     whereWith(args: any): (table: any, params: any) => string;
