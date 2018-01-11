@@ -14,32 +14,23 @@ const args_1 = require("../util/args");
 const type_1 = require("../util/type");
 class GraphQLUpdateType {
     constructor(config) {
-        this.__resolve = async (value, _a, { knex }, info) => {
+        this.type = graphql_1.GraphQLInt;
+        this.resolve = async (value, _a, { knex }, info) => {
             var { newValue } = _a, args = __rest(_a, ["newValue"]);
             return knex(this.__sqlTable)
                 .where(args_1.default.sqlArgsOf(args, this.__fields))
                 .update(args_1.default.sqlArgsOf(newValue, this.__fields));
         };
-        this.__name = config.name;
         this.__type = config.type;
-        this.__description = config.description;
         this.__originType = type_1.default.originalTypeOf(config.type);
         this.__sqlTable = this.__originType._typeConfig.sqlTable;
         this.__fields = this.__originType.getFields();
         const args = (config.args || (e => e))(args_1.default.of(config.type));
-        this.__args = this.__newValueWith(args);
+        this.args = this.__newValueWith(args);
+        this.description = config.description;
     }
     __newValueWith(args) {
         return Object.assign({}, args, { newValue: { type: type_1.default.inputTypeOf(this.__type, true) } });
-    }
-    toObject() {
-        return {
-            name: this.__name,
-            type: graphql_1.GraphQLInt,
-            args: this.__args,
-            description: this.__description,
-            resolve: this.__resolve
-        };
     }
 }
 exports.default = GraphQLUpdateType;

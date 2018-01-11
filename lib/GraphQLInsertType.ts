@@ -6,14 +6,12 @@ import typeUtil from '../util/type';
 import { ArgumentType } from '../util/args';
 
 export type GraphQLInsertTypeConfig = {
-  name: string;
   argName: string;
   description?: string;
   type: GraphQLObjectType | GraphQLList<any> | GraphQLNonNull<any>;
 }
 
 export default class GraphQLInsertType {
-  name: string;
   description: string;
   args: ArgumentType;
   type = GraphQLInt;
@@ -44,11 +42,11 @@ export default class GraphQLInsertType {
     this.__sqlTable = type._typeConfig.sqlTable;
     this.__schemaName = type.name;
     this.__type = config.type;
-    this.__handler = Object.entries(fields).reduce((handler, [name, { sqlColumn, handle }]) => ({
-      ...handler, [name]: { sqlColumn, handle }
-    }), {});
+    this.__handler = Object.entries(fields)
+      .reduce((handler, [name, { sqlColumn, handle }]) => ({
+        ...handler, [name]: { sqlColumn, handle }
+      }), {});
 
-    this.name = config.name;
     this.description = config.description;
     this.args = {
       [this.__argName]: { type: typeUtil.inputTypeOf(this.__type) }

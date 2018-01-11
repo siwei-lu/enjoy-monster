@@ -4,10 +4,13 @@ const __1 = require("../../..");
 const Question_1 = require("./Question");
 exports.default = {
     createQuestion: new __1.GraphQLInsertType({
-        name: '更新 Question',
         argName: 'question',
-        description: 'test',
+        description: '更新 Question',
         type: Question_1.default
     }),
+    updateQuestion: new __1.GraphQLUpdateType({
+        description: '更新question',
+        type: Question_1.default
+    })
 };
 //# sourceMappingURL=mutation.js.map

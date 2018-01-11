@@ -2,13 +2,11 @@ import { GraphQLObjectType } from 'graphql';
 import { GraphQLList, GraphQLNonNull, GraphQLScalarType } from 'graphql';
 import { ArgumentType } from '../util/args';
 export declare type GraphQLInsertTypeConfig = {
-    name: string;
     argName: string;
     description?: string;
     type: GraphQLObjectType | GraphQLList<any> | GraphQLNonNull<any>;
 };
 export default class GraphQLInsertType {
-    name: string;
     description: string;
     args: ArgumentType;
     type: GraphQLScalarType;
