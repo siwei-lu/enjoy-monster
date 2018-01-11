@@ -8,14 +8,10 @@ import GraphQLUpdateType from './lib/GraphQLUpdateType';
 import GraphQLObjectType from './lib/GraphQLObjectType';
 import GraphQLDateTime from './extra/GraphQLDateTime';
 
-const rootQuery = (ofQuery: { [name: string]: GraphQLQueryType }) =>
+const rootQueryOf = (queries: any) =>
   new GraphQLObjectType({
     name: 'RootQuery',
-    fields: () => Object
-      .entries(ofQuery)
-      .reduce((fields, [name, field]) => ({
-        ...fields, [name]: field.toObject()
-      }), {})
+    fields: () => queries
   });
 
 const rootMutation = (ofMutation: { [name: string]: GraphQLInsertType | GraphQLUpdateType  }) =>
@@ -27,7 +23,7 @@ const rootMutation = (ofMutation: { [name: string]: GraphQLInsertType | GraphQLU
   });
 
 export default function (schema: any, description = 'Powered by EnjoyMonster') {;
-  const query = rootQuery(schema.query);
+  const query = rootQueryOf(schema.query);
   const mutation = rootMutation(schema.mutation);
   return new GraphQLSchema({ query, mutation, description });
 }

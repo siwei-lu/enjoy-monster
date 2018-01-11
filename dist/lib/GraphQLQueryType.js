@@ -10,17 +10,18 @@ class GraphQLQueryType {
     constructor(type, args = (args) => args) {
         this.__type = type;
         this.__args = args(args_1.default.of(type));
-        this.__where = this.where(this.__args);
+        this.__where = this.whereWith(this.__args);
         this.__resolve = resolve;
+        this.__setEnumableGetter();
     }
-    where(withArgs) {
+    whereWith(args) {
         return (table, params) => {
             const conditions = {};
-            Object.keys(withArgs).forEach(key => {
+            Object.keys(args).forEach(key => {
                 const val = params[key];
                 if (val === null || val === undefined)
                     return true;
-                const sqlColumn = withArgs[key].sqlColumn || key;
+                const sqlColumn = args[key].sqlColumn || key;
                 conditions[sqlColumn] = val;
             });
             let clause = '1=1';
@@ -39,13 +40,13 @@ class GraphQLQueryType {
             return clause;
         };
     }
-    toObject() {
-        return {
-            type: this.__type,
-            args: this.__args,
-            where: this.__where,
-            resolve: this.__resolve
-        };
+    __setEnumableGetter() {
+        const getters = ['type', 'where', 'args', 'resolve']
+            .reduce((sum, name) => (Object.assign({}, sum, { [name]: {
+                get() { return this[`__${name}`]; },
+                enumerable: true
+            } })), {});
+        Object.defineProperties(this, Object.assign({}, getters));
     }
 }
 exports.default = GraphQLQueryType;

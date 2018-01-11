@@ -8,11 +8,6 @@ export default class GraphQLQueryType {
     private __args;
     private __resolve;
     constructor(type: GraphQLOutputType, args?: (args: ArgumentType) => ArgumentType);
-    where(withArgs: any): (table: any, params: any) => string;
-    toObject(): {
-        type: GraphQLOutputType;
-        args: ArgumentType;
-        where: WhereType;
-        resolve: ResolveType;
-    };
+    whereWith(args: any): (table: any, params: any) => string;
+    private __setEnumableGetter();
 }
