@@ -55,7 +55,7 @@ export default class GraphQLQueryType {
         }, [[], []]);
 
       condition.forEach(({ key, value }) => {
-        const { sqlColumn } = args(key);
+        const { sqlColumn } = args[key];
         conditions[sqlColumn || key] = value;
       });
 
