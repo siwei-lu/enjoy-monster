@@ -3,17 +3,27 @@ import { GraphQLList, GraphQLNonNull, GraphQLInputObjectType, GraphQLInt, GraphQ
 import * as Knex from 'knex';
 
 import typeUtil from '../util/type';
+import { ArgumentType } from '../util/args';
 
 export type GraphQLInsertTypeConfig = {
-  name: string
-  description?: string,
-  type: GraphQLObjectType | GraphQLList<any> | GraphQLNonNull<any>
+  name: string;
+  argName: string;
+  description?: string;
+  type: GraphQLObjectType | GraphQLList<any> | GraphQLNonNull<any>;
 }
 
 export default class GraphQLInsertType {
-  private __name: string;
+  name: string;
+  description: string;
+  args: ArgumentType;
+  type = GraphQLInt;
+  resolve = async (value, { [this.__argName]: args }, { knex }) => {
+    const parsedArgs = this.__handle(args);
+    return await knex(this.__sqlTable).insert(parsedArgs);
+  };
+
+  private __argName: string;
   private __schemaName: string;
-  private __description: string;
   private __sqlTable: string;
   private __fieldNames: any;
   private __type: any;
@@ -22,6 +32,27 @@ export default class GraphQLInsertType {
       sqlColumn?: string,
       handle?: (value: any) => any
     }
+  }
+
+  constructor(config: GraphQLInsertTypeConfig) {
+    const type = config.type instanceof GraphQLObjectType
+      ? config.type
+      : config.type.ofType;
+    const fields = type.getFields();
+
+    this.__argName = config.argName;
+    this.__sqlTable = type._typeConfig.sqlTable;
+    this.__schemaName = type.name;
+    this.__type = config.type;
+    this.__handler = Object.entries(fields).reduce((handler, [name, { sqlColumn, handle }]) => ({
+      ...handler, [name]: { sqlColumn, handle }
+    }), {});
+
+    this.name = config.name;
+    this.description = config.description;
+    this.args = {
+      [this.__argName]: { type: typeUtil.inputTypeOf(this.__type) }
+    };
   }
 
   private __handle(args) {
@@ -34,39 +65,5 @@ export default class GraphQLInsertType {
     });
 
     return result;
-  }
-
-  constructor(config: GraphQLInsertTypeConfig) {
-    const type = config.type instanceof GraphQLObjectType
-      ? config.type
-      : config.type.ofType;
-
-    const fields = type.getFields();
-
-    this.__name = config.name;
-    this.__sqlTable = type._typeConfig.sqlTable;
-    this.__schemaName = type.name;
-    this.__type = config.type;
-    this.__handler = Object.entries(fields).reduce((handler, [name, { sqlColumn, handle }]) => ({
-      ...handler, [name]: { sqlColumn, handle }
-    }), {});
-  }
-
-  resolver() {
-    return async (value, { [this.__name]: args }, { knex }) => {
-      const parsedArgs = this.__handle(args);
-      return await knex(this.__sqlTable).insert(parsedArgs);
-    };
-  }
-
-  toObject() {
-    return {
-      type: GraphQLInt,
-      description: this.__description,
-      resolve: this.resolver().bind(this),
-      args: {
-        [this.__name]: { type: typeUtil.inputTypeOf(this.__type) }
-      }
-    };
   }
 }

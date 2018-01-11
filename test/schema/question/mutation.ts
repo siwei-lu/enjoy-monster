@@ -4,12 +4,13 @@ import Question from './Question';
 
 export default {
   createQuestion: new GraphQLInsertType({
-    name: 'question',
+    name: '更新 Question',
+    argName: 'question',
     description: 'test',
     type: Question
   }),
-  updateQuestion: new GraphQLUpdateType({
-    name: '更新question',
-    type: Question
-  })
+  // updateQuestion: new GraphQLUpdateType({
+  //   name: '更新question',
+  //   type: Question
+  // })
 }

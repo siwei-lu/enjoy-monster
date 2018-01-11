@@ -1,31 +1,26 @@
 import { GraphQLObjectType } from 'graphql';
 import { GraphQLList, GraphQLNonNull, GraphQLScalarType } from 'graphql';
+import { ArgumentType } from '../util/args';
 export declare type GraphQLInsertTypeConfig = {
     name: string;
+    argName: string;
     description?: string;
     type: GraphQLObjectType | GraphQLList<any> | GraphQLNonNull<any>;
 };
 export default class GraphQLInsertType {
-    private __name;
+    name: string;
+    description: string;
+    args: ArgumentType;
+    type: GraphQLScalarType;
+    resolve: (value: any, {[this.__argName]: args}: {}, {knex}: {
+        knex: any;
+    }) => Promise<any>;
+    private __argName;
     private __schemaName;
-    private __description;
     private __sqlTable;
     private __fieldNames;
     private __type;
     private __handler;
-    private __handle(args);
     constructor(config: GraphQLInsertTypeConfig);
-    resolver(): (value: any, {[this.__name]: args}: {}, {knex}: {
-        knex: any;
-    }) => Promise<any>;
-    toObject(): {
-        type: GraphQLScalarType;
-        description: string;
-        resolve: any;
-        args: {
-            [x: string]: {
-                type: any;
-            };
-        };
-    };
+    private __handle(args);
 }

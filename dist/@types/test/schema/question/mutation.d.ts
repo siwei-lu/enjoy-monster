@@ -1,6 +1,5 @@
-import { GraphQLInsertType, GraphQLUpdateType } from '../../..';
+import { GraphQLInsertType } from '../../..';
 declare const _default: {
     createQuestion: GraphQLInsertType;
-    updateQuestion: GraphQLUpdateType;
 };
 export default _default;
