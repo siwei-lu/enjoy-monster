@@ -17,20 +17,32 @@ class GraphQLUpdateType {
         this.type = graphql_1.GraphQLInt;
         this.resolve = async (value, _a, { knex }, info) => {
             var { newValue } = _a, args = __rest(_a, ["newValue"]);
+            const parsed = this.__handle(newValue);
             return knex(this.__sqlTable)
                 .where(args_1.default.sqlArgsOf(args, this.__fields))
-                .update(args_1.default.sqlArgsOf(newValue, this.__fields));
+                .update(parsed);
         };
         this.__type = config.type;
         this.__originType = type_1.default.originalTypeOf(config.type);
         this.__sqlTable = this.__originType._typeConfig.sqlTable;
         this.__fields = this.__originType.getFields();
+        this.__handler = Object.entries(this.__fields)
+            .reduce((handler, [name, { sqlColumn, handle }]) => (Object.assign({}, handler, { [name]: { sqlColumn, handle } })), {});
         const args = (config.args || (e => e))(args_1.default.of(config.type));
         this.args = this.__newValueWith(args);
         this.description = config.description;
     }
     __newValueWith(args) {
         return Object.assign({}, args, { newValue: { type: type_1.default.inputTypeOf(this.__type, true) } });
+    }
+    __handle(args) {
+        const result = {};
+        Object.entries(args).forEach(([name, value]) => {
+            value = this.__handler[name].handle ? this.__handler[name].handle(value) : value;
+            name = this.__handler[name].sqlColumn || name;
+            result[name] = value;
+        });
+        return result;
     }
 }
 exports.default = GraphQLUpdateType;
