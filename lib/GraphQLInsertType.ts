@@ -15,9 +15,9 @@ export default class GraphQLInsertType {
   description: string;
   args: ArgumentType;
   type = GraphQLInt;
-  resolve = async (value, { [this.__argName]: args }, { knex }) => {
-    const parsedArgs = this.__handle(args);
-    return await knex(this.__sqlTable).insert(parsedArgs);
+  resolve = async (value, { [this.__argName]: args }, ctx) => {
+    const parsedArgs = this.__handle(args, ctx);
+    return await ctx.knex(this.__sqlTable).insert(parsedArgs);
   };
 
   private __argName: string;
@@ -28,7 +28,7 @@ export default class GraphQLInsertType {
   private __handler: {
     [name: string]: {
       sqlColumn?: string,
-      handle?: (value: any) => any
+      handle?: (value: any, ctx: any) => any
     }
   }
 
@@ -53,11 +53,11 @@ export default class GraphQLInsertType {
     };
   }
 
-  private __handle(args) {
+  private __handle(args, ctx) {
     const result = {};
 
     Object.entries(args).forEach(([name, value]) => {
-      value = this.__handler[name].handle ? this.__handler[name].handle(value) : value;
+      value = this.__handler[name].handle ? this.__handler[name].handle(value, ctx) : value;
       name = this.__handler[name].sqlColumn || name;
       result[name] = value;
     });
