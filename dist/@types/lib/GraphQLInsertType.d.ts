@@ -10,9 +10,7 @@ export default class GraphQLInsertType {
     description: string;
     args: ArgumentType;
     type: GraphQLScalarType;
-    resolve: (value: any, {[this.__argName]: args}: {}, {knex}: {
-        knex: any;
-    }) => Promise<any>;
+    resolve: (value: any, {[this.__argName]: args}: {}, ctx: any) => Promise<any>;
     private __argName;
     private __schemaName;
     private __sqlTable;
@@ -20,5 +18,5 @@ export default class GraphQLInsertType {
     private __type;
     private __handler;
     constructor(config: GraphQLInsertTypeConfig);
-    private __handle(args);
+    private __handle(args, ctx);
 }

@@ -6,9 +6,9 @@ const type_1 = require("../util/type");
 class GraphQLInsertType {
     constructor(config) {
         this.type = graphql_2.GraphQLInt;
-        this.resolve = async (value, { [this.__argName]: args }, { knex }) => {
-            const parsedArgs = this.__handle(args);
-            return await knex(this.__sqlTable).insert(parsedArgs);
+        this.resolve = async (value, { [this.__argName]: args }, ctx) => {
+            const parsedArgs = this.__handle(args, ctx);
+            return await ctx.knex(this.__sqlTable).insert(parsedArgs);
         };
         const type = config.type instanceof graphql_1.GraphQLObjectType
             ? config.type
@@ -25,10 +25,10 @@ class GraphQLInsertType {
             [this.__argName]: { type: type_1.default.inputTypeOf(this.__type) }
         };
     }
-    __handle(args) {
+    __handle(args, ctx) {
         const result = {};
         Object.entries(args).forEach(([name, value]) => {
-            value = this.__handler[name].handle ? this.__handler[name].handle(value) : value;
+            value = this.__handler[name].handle ? this.__handler[name].handle(value, ctx) : value;
             name = this.__handler[name].sqlColumn || name;
             result[name] = value;
         });
