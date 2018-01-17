@@ -44,11 +44,9 @@ export default class GraphQLObjectType extends ObjectType {
    */
   getFields() {
     const { fields, relations } = this._typeConfig;
-
     if (this.__isRelationComposed || !relations) {
       return super.getFields();
     }
-
     const compose = () => ({ ...fields(), ...relations() });
 
     const self = new Proxy(this, {

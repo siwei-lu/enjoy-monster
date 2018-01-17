@@ -1,0 +1,1 @@
+{"version":3,"file":"query.js","sourceRoot":"","sources":["../../../../test/schema/product/query.ts"],"names":[],"mappings":";;AAAA,uCAAgC;AAChC,qCAAsC;AAEtC,gCAA4C;AAE5C,kBAAe;IACb,OAAO,EAAE,IAAI,oBAAgB,CAAC,iBAAO,CAAC;IACtC,QAAQ,EAAE,IAAI,oBAAgB,CAAC,IAAI,qBAAW,CAAC,iBAAO,CAAC,CAAC;CACzD,CAAA"}

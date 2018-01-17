@@ -6,8 +6,9 @@ import GraphQLUpdateType from '../../lib/GraphQLUpdateType';
 
 import question from './question';
 import user from './user';
+import product from './product'
 
 export default {
-  query: { ...question.query, ...user.query },
+  query: { ...question.query, ...user.query, ...product.query },
   mutation: { ...question.mutation }
 }

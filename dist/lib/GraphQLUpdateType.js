@@ -12,12 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
 const args_1 = require("../util/args");
 const type_1 = require("../util/type");
+const knex_1 = require("../util/knex");
 class GraphQLUpdateType {
     constructor(config) {
         this.type = graphql_1.GraphQLInt;
-        this.resolve = async (value, _a, { knex }, info) => {
+        this.resolve = async (value, _a, ctx, info) => {
             var { newValue } = _a, args = __rest(_a, ["newValue"]);
             const parsed = this.__handle(newValue);
+            const knex = knex_1.knexOf(ctx, this.__sqlDatabase);
             return knex(this.__sqlTable)
                 .where(args_1.default.sqlArgsOf(args, this.__fields))
                 .update(parsed);
@@ -25,6 +27,7 @@ class GraphQLUpdateType {
         this.__type = config.type;
         this.__originType = type_1.default.originalTypeOf(config.type);
         this.__sqlTable = this.__originType._typeConfig.sqlTable;
+        this.__sqlDatabase = this.__originType._typeConfig.sqlDatabase;
         this.__fields = this.__originType.getFields();
         this.__handler = Object.entries(this.__fields)
             .reduce((handler, [name, { sqlColumn, handle }]) => (Object.assign({}, handler, { [name]: { sqlColumn, handle } })), {});

@@ -2,6 +2,7 @@ import { GraphQLOutputType, GraphQLInt, GraphQLScalarType, GraphQLObjectType, Gr
 
 import argsUtil, { ArgumentType } from '../util/args';
 import typeUtil from '../util/type';
+import { knexOf } from '../util/knex';
 
 export type GraphQLUpdateTypeConfig = {
   type: GraphQLObjectType | GraphQLList<GraphQLObjectType>,
@@ -13,8 +14,9 @@ export default class GraphQLUpdateType {
   description: string;
   args: ArgumentType;
   type = GraphQLInt;
-  resolve = async (value, { newValue, ...args }, { knex }, info) => {
+  resolve = async (value, { newValue, ...args }, ctx, info) => {
     const parsed = this.__handle(newValue);
+    const knex = knexOf(ctx, this.__sqlDatabase);
 
     return knex(this.__sqlTable)
       .where(argsUtil.sqlArgsOf(args, this.__fields))
@@ -23,6 +25,7 @@ export default class GraphQLUpdateType {
 
   private __type: GraphQLObjectType | GraphQLList<GraphQLObjectType>;
   private __originType: GraphQLObjectType & { _typeConfig: any };
+  private __sqlDatabase: string;
   private __sqlTable: string;
   private __fields: any;
   private __handler: {
@@ -44,6 +47,7 @@ export default class GraphQLUpdateType {
 
     this.__originType = typeUtil.originalTypeOf(config.type);
     this.__sqlTable = this.__originType._typeConfig.sqlTable;
+    this.__sqlDatabase = this.__originType._typeConfig.sqlDatabase;
     this.__fields = this.__originType.getFields();
     this.__handler = Object.entries(this.__fields)
       .reduce((handler, [name, { sqlColumn, handle }]) => ({

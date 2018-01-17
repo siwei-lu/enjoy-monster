@@ -4,6 +4,7 @@ import * as Knex from 'knex';
 
 import typeUtil from '../util/type';
 import { ArgumentType } from '../util/args';
+import { knexOf } from '../util/knex';
 
 export type GraphQLInsertTypeConfig = {
   argName: string;
@@ -16,12 +17,14 @@ export default class GraphQLInsertType {
   args: ArgumentType;
   type = GraphQLInt;
   resolve = async (value, { [this.__argName]: args }, ctx) => {
+    const knex = knexOf(ctx, this.__sqlDatabase);
     const parsedArgs = this.__handle(args, ctx);
-    return await ctx.knex(this.__sqlTable).insert(parsedArgs);
+    return await knex(this.__sqlTable).insert(parsedArgs);
   };
 
   private __argName: string;
   private __schemaName: string;
+  private __sqlDatabase: string;
   private __sqlTable: string;
   private __fieldNames: any;
   private __type: any;
@@ -40,6 +43,7 @@ export default class GraphQLInsertType {
 
     this.__argName = config.argName;
     this.__sqlTable = type._typeConfig.sqlTable;
+    this.__sqlDatabase = type._typeConfig.sqlDatabase;
     this.__schemaName = type.name;
     this.__type = config.type;
     this.__handler = Object.entries(fields)

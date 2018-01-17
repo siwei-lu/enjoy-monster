@@ -12,11 +12,10 @@ export default class GraphQLUpdateType {
     resolve: (value: any, {newValue, ...args}: {
         [x: string]: any;
         newValue: any;
-    }, {knex}: {
-        knex: any;
-    }, info: any) => Promise<any>;
+    }, ctx: any, info: any) => Promise<any>;
     private __type;
     private __originType;
+    private __sqlDatabase;
     private __sqlTable;
     private __fields;
     private __handler;

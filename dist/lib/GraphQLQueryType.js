@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sqlstring_1 = require("sqlstring");
 const join_monster_1 = require("join-monster");
 const args_1 = require("../util/args");
+const knex_1 = require("../util/knex");
 const resolve = (parent, args, context, resolveInfo) => {
-    return join_monster_1.default(resolveInfo, context, async (sql) => (await context.knex.raw(sql))[0], { dialect: 'mysql' });
+    const knex = knex_1.knexOf(context, resolveInfo.returnType._typeConfig.sqlDatabase);
+    return join_monster_1.default(resolveInfo, context, async (sql) => (await knex.raw(sql))[0], { dialect: 'mysql' });
 };
 class GraphQLQueryType {
     constructor(type, args = (args) => args) {

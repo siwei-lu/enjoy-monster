@@ -5,7 +5,7 @@ const Product = new GraphQLObjectType({
   description: '商品',
   name: 'Product',
   sqlDatabase: 'payment',
-  sqlTable: 'payment',
+  sqlTable: 'sszpay_product',
   uniqueKey: 'sku_id',
   fields: () => ({
     id: { type: GraphQLInt, sqlColumn: 'sku_id', isArg: true },

@@ -13,6 +13,7 @@ export default class GraphQLInsertType {
     resolve: (value: any, {[this.__argName]: args}: {}, ctx: any) => Promise<any>;
     private __argName;
     private __schemaName;
+    private __sqlDatabase;
     private __sqlTable;
     private __fieldNames;
     private __type;
