@@ -1,5 +1,6 @@
 import { GraphQLObjectType as ObjectType, GraphQLObjectTypeConfig as ObjectTypeConfig } from 'graphql';
 export declare type GraphQLObjectTypeConfig = ObjectTypeConfig<any, any> & {
+    sqlDatabase?: string;
     sqlTable?: string;
     uniqueKey?: string;
     relations?: () => any;

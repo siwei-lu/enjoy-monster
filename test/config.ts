@@ -1,4 +1,4 @@
-export const database = {
+export const question = {
   client: 'mysql',
   debug: true,
   connection: {
@@ -14,3 +14,15 @@ export const database = {
     idleTimeoutMillis: 120000,
   },
 };
+
+export const payment = {
+  client: 'mysql',
+  debug: true,
+  connection: {
+    host: '192.168.0.3',
+    port: 3307,
+    user: 'pay',
+    password: 'XhrlaItQIsHvRAIB',
+    database: 'payment'
+  }
+}

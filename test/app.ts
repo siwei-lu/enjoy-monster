@@ -12,7 +12,9 @@ const app = new Koa();
 const router = new KoaRouter();
 const PORT = 3000;
 
-const knex = Knex(config.database);
+const question = Knex(config.question);
+const payment = Knex(config.payment);
+const knex = { question, payment };
 
 app.use(koaBody());
 

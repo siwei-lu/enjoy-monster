@@ -5,6 +5,7 @@ import {
 } from 'graphql';
 
 export type GraphQLObjectTypeConfig = ObjectTypeConfig<any, any> & {
+  sqlDatabase?: string;
   sqlTable?: string;
   uniqueKey?: string;  
   relations?: () => any;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.database = {
+exports.question = {
     client: 'mysql',
     debug: true,
     connection: {
@@ -15,5 +15,16 @@ exports.database = {
         min: 1,
         idleTimeoutMillis: 120000,
     },
+};
+exports.payment = {
+    client: 'mysql',
+    debug: true,
+    connection: {
+        host: '192.168.0.3',
+        port: 3307,
+        user: 'pay',
+        password: 'XhrlaItQIsHvRAIB',
+        database: 'payment'
+    }
 };
 //# sourceMappingURL=config.js.map

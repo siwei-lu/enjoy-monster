@@ -6,6 +6,7 @@ import Question from '../question/Question';
 const User = new GraphQLObjectType({
   description: '用户',
   name: 'User',
+  sqlDatabase: 'question',
   sqlTable: 'user',
   uniqueKey: 'id',
 
