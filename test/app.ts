@@ -14,15 +14,15 @@ const PORT = 3000;
 
 const question = Knex(config.question);
 const payment = Knex(config.payment);
-const knex = { question, payment };
+// const knex = { question, payment };
 
 app.use(koaBody());
 
 import schema from './schema';
 const parsedSchema = enjoyMonster(schema);
  
-router.post('/graphql', graphqlKoa({ schema: parsedSchema, context: { knex } }));
-router.get('/graphql', graphqlKoa({ schema: parsedSchema, context: { knex } }));
+router.post('/graphql', graphqlKoa({ schema: parsedSchema, context: { knex: question } }));
+router.get('/graphql', graphqlKoa({ schema: parsedSchema, context: { knex: question } }));
 
 router.post('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));
 router.get('/graphiql', graphiqlKoa({ endpointURL: '/graphql' }));

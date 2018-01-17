@@ -11,6 +11,7 @@ import {
 } from 'graphql';
 
 import argsUtil, { ArgumentType } from '../util/args';
+import typeUtil from '../util/type';
 import { knexOf } from '../util/knex';
 
 
@@ -18,8 +19,9 @@ export type WhereType = (talbe: string, args: {}, context: any) => string;
 export type OrderByType = (args: any) => { [name: string]: 'DESC' | 'ASC'}
 export type ResolveType = (parent: any, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => any;
 
-const resolve = (parent, args: ArgumentType, context: any, resolveInfo) => {
-  const knex = knexOf(context, resolveInfo.returnType._typeConfig.sqlDatabase);
+const resolve = (parent, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => {
+  const type = typeUtil.originalTypeOf(resolveInfo.returnType);
+  const knex = knexOf(context, type._typeConfig.sqlDatabase);
   return joinMonster(resolveInfo, context, async sql => (await knex.raw(sql))[0],
   { dialect: 'mysql' });
 };
