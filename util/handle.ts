@@ -23,9 +23,10 @@ export default function handle(type: GraphQLOutputType, parent, args, context, i
     Object.entries(type.getFields())
       .filter(([name]) => parent[name])
       .forEach(([name, field]) => {
-        result[name] = field.type instanceof GraphQLScalarType
-          ? callHandle(field.handle)(parent[name], args, context, info)
-          : result[name] = thunk(field.handle)(handle(field.type, parent[name], args, context, info));
+        const value = field.type instanceof GraphQLScalarType
+          ? parent[name]
+          : handle(field.type, parent[name], args, context, info);
+        result[name] = callHandle(field.handle)(value, args, context, info);
       });
     return result;
   }

@@ -20,9 +20,10 @@ function handle(type, parent, args, context, info) {
         Object.entries(type.getFields())
             .filter(([name]) => parent[name])
             .forEach(([name, field]) => {
-            result[name] = field.type instanceof graphql_1.GraphQLScalarType
-                ? exports.callHandle(field.handle)(parent[name], args, context, info)
-                : result[name] = exports.thunk(field.handle)(handle(field.type, parent[name], args, context, info));
+            const value = field.type instanceof graphql_1.GraphQLScalarType
+                ? parent[name]
+                : handle(field.type, parent[name], args, context, info);
+            result[name] = exports.callHandle(field.handle)(value, args, context, info);
         });
         return result;
     }
