@@ -5,6 +5,8 @@ import typeUtil from './type';
 
 const returnSelf = self => self;
 export const thunk = handle => value => (handle || returnSelf)(value);
+export const callHandle = handle => (value, args, context, info) =>
+  handle ? handle(value, args, context, info) : value;
 
 export default function handle(type: GraphQLOutputType, parent, args, context, info) {
   if (!parent) {
@@ -21,11 +23,9 @@ export default function handle(type: GraphQLOutputType, parent, args, context, i
     Object.entries(type.getFields())
       .filter(([name]) => parent[name])
       .forEach(([name, field]) => {
-        if (field.type instanceof GraphQLScalarType) {
-          result[name] = thunk(field.handle)(parent[name]);
-        } else {
-          result[name] = thunk(field.handle)(handle(field.type, parent[name], args, context, info));
-        }
+        result[name] = field.type instanceof GraphQLScalarType
+          ? callHandle(field.handle)(parent[name], args, context, info)
+          : result[name] = thunk(field.handle)(handle(field.type, parent[name], args, context, info));
       });
     return result;
   }

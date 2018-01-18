@@ -4,6 +4,7 @@ const graphql_1 = require("graphql");
 const GraphQLObjectType_1 = require("../lib/GraphQLObjectType");
 const returnSelf = self => self;
 exports.thunk = handle => value => (handle || returnSelf)(value);
+exports.callHandle = handle => (value, args, context, info) => handle ? handle(value, args, context, info) : value;
 function handle(type, parent, args, context, info) {
     if (!parent) {
         parent = args;
@@ -19,12 +20,9 @@ function handle(type, parent, args, context, info) {
         Object.entries(type.getFields())
             .filter(([name]) => parent[name])
             .forEach(([name, field]) => {
-            if (field.type instanceof graphql_1.GraphQLScalarType) {
-                result[name] = exports.thunk(field.handle)(parent[name]);
-            }
-            else {
-                result[name] = exports.thunk(field.handle)(handle(field.type, parent[name], args, context, info));
-            }
+            result[name] = field.type instanceof graphql_1.GraphQLScalarType
+                ? exports.callHandle(field.handle)(parent[name], args, context, info)
+                : result[name] = exports.thunk(field.handle)(handle(field.type, parent[name], args, context, info));
         });
         return result;
     }
