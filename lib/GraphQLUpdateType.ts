@@ -2,6 +2,7 @@ import { GraphQLOutputType, GraphQLInt, GraphQLScalarType, GraphQLObjectType, Gr
 
 import argsUtil, { ArgumentType } from '../util/args';
 import typeUtil from '../util/type';
+import handle, { thunk } from '../util/handle';
 import { knexOf } from '../util/knex';
 
 export type GraphQLUpdateTypeConfig = {
@@ -15,11 +16,12 @@ export default class GraphQLUpdateType {
   args: ArgumentType;
   type = GraphQLInt;
   resolve = async (value, { newValue, ...args }, ctx, info) => {
-    const parsed = this.__handle(newValue);
     const knex = knexOf(ctx, this.__sqlDatabase);
+    const parsed = handle(this.__type, null, newValue, ctx, info)
+    const target = argsUtil.sqlArgsOf(parsed, this.__originType.getFields());    
 
     return knex(this.__sqlTable)
-      .where(argsUtil.sqlArgsOf(args, this.__fields))
+      .where(argsUtil.sqlArgsOf(args, this.__originType.getFields()))
       .update(parsed);
   };
 
@@ -27,7 +29,6 @@ export default class GraphQLUpdateType {
   private __originType: GraphQLObjectType & { _typeConfig: any };
   private __sqlDatabase: string;
   private __sqlTable: string;
-  private __fields: any;
   private __handler: {
     [name: string]: {
       sqlColumn?: string,
@@ -44,30 +45,12 @@ export default class GraphQLUpdateType {
 
   constructor(config: GraphQLUpdateTypeConfig) {
     this.__type = config.type;
-
     this.__originType = typeUtil.originalTypeOf(config.type);
     this.__sqlTable = this.__originType._typeConfig.sqlTable;
     this.__sqlDatabase = this.__originType._typeConfig.sqlDatabase;
-    this.__fields = this.__originType.getFields();
-    this.__handler = Object.entries(this.__fields)
-      .reduce((handler, [name, { sqlColumn, handle }]) => ({
-        ...handler, [name]: { sqlColumn, handle }
-      }), {});
     
-    const args = (config.args || (e => e))(argsUtil.of(config.type));    
+    const args = thunk(config.args)(argsUtil.of(config.type));
     this.args = this.__newValueWith(args);
     this.description = config.description;    
-  }
-
-  private __handle(args) {
-    const result = {};
-
-    Object.entries(args).forEach(([name, value]) => {
-      value = this.__handler[name].handle ? this.__handler[name].handle(value) : value;
-      name = this.__handler[name].sqlColumn || name;
-      result[name] = value;
-    });
-
-    return result;
   }
 }

@@ -1,4 +1,4 @@
-import { GraphQLOutputType, GraphQLScalarType } from "graphql";
+import { GraphQLOutputType } from "graphql";
 export declare type ArgumentType = {
     [name: string]: {
         type: GraphQLOutputType;
@@ -8,7 +8,7 @@ export declare type ArgumentType = {
 export declare class Args {
     readonly sortArg: {
         __sort: {
-            type: GraphQLScalarType;
+            type: any;
             resolve: (table: any, params: any) => string;
         };
     };

@@ -1,3 +1,2 @@
-import { GraphQLScalarType } from 'graphql';
-declare const GraphQLDateTime: GraphQLScalarType;
+declare const GraphQLDateTime: any;
 export default GraphQLDateTime;

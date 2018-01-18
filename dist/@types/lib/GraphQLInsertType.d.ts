@@ -1,5 +1,5 @@
 import { GraphQLObjectType } from 'graphql';
-import { GraphQLList, GraphQLNonNull, GraphQLScalarType } from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 import { ArgumentType } from '../util/args';
 export declare type GraphQLInsertTypeConfig = {
     argName: string;
@@ -9,15 +9,13 @@ export declare type GraphQLInsertTypeConfig = {
 export default class GraphQLInsertType {
     description: string;
     args: ArgumentType;
-    type: GraphQLScalarType;
-    resolve: (value: any, {[this.__argName]: args}: {}, ctx: any) => Promise<any>;
+    type: any;
+    resolve: (value: any, {[this.__argName]: args}: {}, ctx: any, info: any) => Promise<any>;
     private __argName;
     private __schemaName;
     private __sqlDatabase;
     private __sqlTable;
-    private __fieldNames;
+    private __originType;
     private __type;
-    private __handler;
     constructor(config: GraphQLInsertTypeConfig);
-    private __handle(args, ctx);
 }

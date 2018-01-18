@@ -1,41 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
-const graphql_2 = require("graphql");
 const type_1 = require("../util/type");
+const args_1 = require("../util/args");
 const knex_1 = require("../util/knex");
+const handle_1 = require("../util/handle");
 class GraphQLInsertType {
     constructor(config) {
-        this.type = graphql_2.GraphQLInt;
-        this.resolve = async (value, { [this.__argName]: args }, ctx) => {
+        this.type = graphql_1.GraphQLInt;
+        this.resolve = async (value, { [this.__argName]: args }, ctx, info) => {
             const knex = knex_1.knexOf(ctx, this.__sqlDatabase);
-            const parsedArgs = this.__handle(args, ctx);
-            return await knex(this.__sqlTable).insert(parsedArgs);
+            const parsed = handle_1.default(this.__type, null, args, ctx, info);
+            const target = args_1.default.sqlArgsOf(parsed, this.__originType.getFields());
+            return await knex(this.__sqlTable).insert(parsed);
         };
-        const type = config.type instanceof graphql_1.GraphQLObjectType
-            ? config.type
-            : config.type.ofType;
-        const fields = type.getFields();
+        this.__originType = type_1.default.originalTypeOf(config.type);
         this.__argName = config.argName;
-        this.__sqlTable = type._typeConfig.sqlTable;
-        this.__sqlDatabase = type._typeConfig.sqlDatabase;
-        this.__schemaName = type.name;
+        this.__sqlTable = this.__originType._typeConfig.sqlTable;
+        this.__sqlDatabase = this.__originType._typeConfig.sqlDatabase;
+        this.__schemaName = this.__originType.name;
         this.__type = config.type;
-        this.__handler = Object.entries(fields)
-            .reduce((handler, [name, { sqlColumn, handle }]) => (Object.assign({}, handler, { [name]: { sqlColumn, handle } })), {});
         this.description = config.description;
         this.args = {
             [this.__argName]: { type: type_1.default.inputTypeOf(this.__type) }
         };
-    }
-    __handle(args, ctx) {
-        const result = {};
-        Object.entries(args).forEach(([name, value]) => {
-            value = this.__handler[name].handle ? this.__handler[name].handle(value, ctx) : value;
-            name = this.__handler[name].sqlColumn || name;
-            result[name] = value;
-        });
-        return result;
     }
 }
 exports.default = GraphQLInsertType;

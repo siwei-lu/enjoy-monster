@@ -1,3 +1,3 @@
-import { GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType } from '../../..';
 declare const Option: GraphQLObjectType;
 export default Option;

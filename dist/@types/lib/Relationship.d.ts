@@ -1,4 +1,3 @@
-import { GraphQLList } from 'graphql';
 import GraphQLObjectType from './GraphQLObjectType';
 export declare type RelationConfig = {
     thisKey: string;
@@ -11,7 +10,7 @@ export declare const hasOne: (type: GraphQLObjectType, config: RelationConfig) =
     sqlJoin: (fromTable: string, toTable: string) => string;
 };
 export declare const hasMany: (type: GraphQLObjectType, config: RelationConfig) => {
-    type: GraphQLList<GraphQLObjectType>;
+    type: any;
     description: string;
     args: any;
     orderBy: (args: any) => {

@@ -8,7 +8,6 @@ const User_1 = require("../user/User");
 const Question = new __1.GraphQLObjectType({
     description: '题目',
     name: 'Question',
-    // sqlDatabase: 'question',
     sqlTable: 'question',
     uniqueKey: 'id',
     fields: () => ({

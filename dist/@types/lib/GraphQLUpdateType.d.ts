@@ -1,4 +1,4 @@
-import { GraphQLScalarType, GraphQLObjectType, GraphQLList } from "graphql";
+import { GraphQLObjectType, GraphQLList } from "graphql";
 import { ArgumentType } from '../util/args';
 export declare type GraphQLUpdateTypeConfig = {
     type: GraphQLObjectType | GraphQLList<GraphQLObjectType>;
@@ -8,7 +8,7 @@ export declare type GraphQLUpdateTypeConfig = {
 export default class GraphQLUpdateType {
     description: string;
     args: ArgumentType;
-    type: GraphQLScalarType;
+    type: any;
     resolve: (value: any, {newValue, ...args}: {
         [x: string]: any;
         newValue: any;
@@ -17,9 +17,7 @@ export default class GraphQLUpdateType {
     private __originType;
     private __sqlDatabase;
     private __sqlTable;
-    private __fields;
     private __handler;
     private __newValueWith(args);
     constructor(config: GraphQLUpdateTypeConfig);
-    private __handle(args);
 }
