@@ -24,7 +24,7 @@ class GraphQLUpdateType {
             const target = args_1.default.sqlArgsOf(parsed, this.__originType.getFields());
             return knex(this.__sqlTable)
                 .where(args_1.default.sqlArgsOf(args, this.__originType.getFields()))
-                .update(parsed);
+                .update(target);
         };
         this.__type = config.type;
         this.__originType = type_1.default.originalTypeOf(config.type);

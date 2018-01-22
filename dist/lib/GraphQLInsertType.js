@@ -12,7 +12,7 @@ class GraphQLInsertType {
             const knex = knex_1.knexOf(ctx, this.__sqlDatabase);
             const parsed = handle_1.default(this.__type, null, args, ctx, info);
             const target = args_1.default.sqlArgsOf(parsed, this.__originType.getFields());
-            return await knex(this.__sqlTable).insert(parsed);
+            return await knex(this.__sqlTable).insert(target);
         };
         this.__originType = type_1.default.originalTypeOf(config.type);
         this.__argName = config.argName;

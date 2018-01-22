@@ -22,7 +22,7 @@ export default class GraphQLUpdateType {
 
     return knex(this.__sqlTable)
       .where(argsUtil.sqlArgsOf(args, this.__originType.getFields()))
-      .update(parsed);
+      .update(target);
   };
 
   private __type: GraphQLObjectType | GraphQLList<GraphQLObjectType>;
