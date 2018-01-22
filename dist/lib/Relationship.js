@@ -34,6 +34,7 @@ exports.hasMany = (type, config) => {
             var { __sort } = _a, args = __rest(_a, ["__sort"]);
             let clause = `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`;
             Object.entries(args).forEach(([key, value]) => {
+                value = isNaN(value) ? `'${value}'` : value;
                 clause += ` and ${toTable}.${key} = ${value}`;
             });
             return clause;
