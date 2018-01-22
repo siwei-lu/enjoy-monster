@@ -31,8 +31,9 @@ export const hasMany = (type: GraphQLObjectType, config: RelationConfig) => {
     },
     sqlJoin: (fromTable, toTable, { __sort, ...args }) => {
       let clause = `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`;
-  
+
       Object.entries(args).forEach(([key, value]) => {
+        value = isNaN(value) ? `'${value}'` : value;
         clause += ` and ${toTable}.${key} = ${value}`;
       });
   
