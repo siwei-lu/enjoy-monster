@@ -1,6 +1,6 @@
 import { GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
 
-import GraphQLDateTime from '../../../extra/GraphQLDateTime';
+import { GraphQLDateTime } from 'graphql-iso-date';
 import Option from './Option';
 import { hasOne, GraphQLObjectType } from '../../..';
 import User from '../user/User';
