@@ -6,7 +6,6 @@ import GraphQLQueryType from './lib/GraphQLQueryType';
 import GraphQLInsertType from './lib/GraphQLInsertType';
 import GraphQLUpdateType from './lib/GraphQLUpdateType';
 import GraphQLObjectType from './lib/GraphQLObjectType';
-import GraphQLDateTime from './extra/GraphQLDateTime';
 
 const queryOf = (queries: any) =>
   new GraphQLObjectType({
@@ -28,10 +27,11 @@ export default function (schema: any, description = 'Powered by EnjoyMonster') {
 }
 
 export {
-  GraphQLQueryType, GraphQLInsertType,
-  GraphQLUpdateType, GraphQLObjectType,
-  GraphQLDateTime
- }
+  GraphQLQueryType, 
+  GraphQLInsertType,
+  GraphQLUpdateType, 
+  GraphQLObjectType,
+};
 
 export * from './lib/Relationship';
 export * from './lib/GraphQLObjectType';
