@@ -1,5 +1,5 @@
 import { GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
-import GraphQLDateTime from '../../../extra/GraphQLDateTime';
+import { GraphQLDateTime } from 'graphql-iso-date';
 import { hasMany, GraphQLObjectType } from '../../..';
 import Question from '../question/Question';
 
