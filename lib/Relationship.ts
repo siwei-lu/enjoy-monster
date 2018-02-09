@@ -9,7 +9,7 @@ export type RelationConfig = {
 }
 
 export const hasOne = (type: GraphQLObjectType, config: RelationConfig) => ({
-  type,  
+  type,
   description: config.description || '',
   sqlJoin: (fromTable: string, toTable: string) =>
     `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`
@@ -18,11 +18,13 @@ export const hasOne = (type: GraphQLObjectType, config: RelationConfig) => ({
 export const hasMany = (type: GraphQLObjectType, config: RelationConfig) => {
   const listType = new GraphQLList(type);
   return {
-    type: listType,  
+    type: listType,
     description: config.description || '',
     args: argsUtil.of(listType),
     orderBy: args => {
-      if (!args.__sort) return null;
+      if (!args.__sort) {
+        return null;
+      }
 
       const [key, value] = args.__sort.split(' ');
       return {
@@ -36,7 +38,7 @@ export const hasMany = (type: GraphQLObjectType, config: RelationConfig) => {
         value = isNaN(value) ? `'${value}'` : value;
         clause += ` and ${toTable}.${key} = ${value}`;
       });
-  
+
       return clause;
     }
   };

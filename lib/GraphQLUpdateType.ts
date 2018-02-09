@@ -18,7 +18,7 @@ export default class GraphQLUpdateType {
   resolve = async (value, { newValue, ...args }, ctx, info) => {
     const knex = knexOf(ctx, this.__sqlDatabase);
     const parsed = handle(this.__type, null, newValue, ctx, info)
-    const target = argsUtil.sqlArgsOf(parsed, this.__originType.getFields());    
+    const target = argsUtil.sqlArgsOf(parsed, this.__originType.getFields());
 
     return knex(this.__sqlTable)
       .where(argsUtil.sqlArgsOf(args, this.__originType.getFields()))
@@ -48,9 +48,9 @@ export default class GraphQLUpdateType {
     this.__originType = typeUtil.originalTypeOf(config.type);
     this.__sqlTable = this.__originType._typeConfig.sqlTable;
     this.__sqlDatabase = this.__originType._typeConfig.sqlDatabase;
-    
+
     const args = thunk(config.args)(argsUtil.of(config.type));
     this.args = this.__newValueWith(args);
-    this.description = config.description;    
+    this.description = config.description;
   }
 }

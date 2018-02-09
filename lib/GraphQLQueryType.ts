@@ -32,7 +32,9 @@ export default class GraphQLQueryType {
    args: ArgumentType;
    resolve: ResolveType;
    orderBy = args => {
-    if (!args.__sort) return null;
+    if (!args.__sort) {
+      return null;
+    }
 
     const [key, value] = args.__sort.split(' ');
     return {
@@ -47,7 +49,7 @@ export default class GraphQLQueryType {
     this.resolve = resolve;
   }
 
-  whereWith(args: any) {
+  public whereWith(args: any) {
     return (table, params) => {
       const conditions = {};
 
@@ -70,7 +72,9 @@ export default class GraphQLQueryType {
 
       Object.keys(conditions).forEach(key => {
         const val = conditions[key];
-        if (val === null || val === undefined) return;
+        if (val === null || val === undefined) {
+          return;
+        }
 
         if (val instanceof Array) {
           clause += ` and ${table}.${key} in ${escape(val)}`
