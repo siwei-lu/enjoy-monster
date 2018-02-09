@@ -50,7 +50,7 @@ class GraphQLQueryType {
                     return;
                 }
                 if (val instanceof Array) {
-                    clause += ` and ${table}.${key} in ${sqlstring_1.escape(val)}`;
+                    clause += ` and ${table}.${key} in (${sqlstring_1.escape(val)})`;
                 }
                 else {
                     clause += ` and ${table}.${key} = ${sqlstring_1.escape(val)}`;
