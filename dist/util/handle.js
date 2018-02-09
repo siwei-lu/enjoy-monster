@@ -18,7 +18,7 @@ function handle(type, parent, args, context, info) {
     if (type instanceof GraphQLObjectType_1.default) {
         const result = {};
         Object.entries(type.getFields())
-            .filter(([name]) => parent[name])
+            .filter(([name]) => typeof parent[name] !== 'undefined')
             .forEach(([name, field]) => {
             const value = field.type instanceof graphql_1.GraphQLScalarType
                 ? parent[name]
