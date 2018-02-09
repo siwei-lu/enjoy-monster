@@ -22,16 +22,16 @@ export const hasMany = (type: GraphQLObjectType, config: RelationConfig) => {
     description: config.description || '',
     args: argsUtil.of(listType),
     orderBy: args => {
-      if (!args.__sort) {
+      if (!args._sort) {
         return null;
       }
 
-      const [key, value] = args.__sort.split(' ');
+      const [key, value] = args._sort.split(' ');
       return {
         [key]: value.toUpperCase()
       }
     },
-    sqlJoin: (fromTable, toTable, { __sort, ...args }) => {
+    sqlJoin: (fromTable, toTable, { _sort, ...args }) => {
       let clause = `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`;
 
       Object.entries(args).forEach(([key, value]) => {

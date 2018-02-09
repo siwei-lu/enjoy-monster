@@ -11,7 +11,7 @@ export type ArgumentType = {
 export class Args {
   get sortArg() {
     return {
-      __sort: {
+      _sort: {
         type: GraphQLString,
         resolve: (table, params) => `ORDER BY ${table}.${params}`
       }

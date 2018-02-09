@@ -12,8 +12,6 @@ const GraphQLUpdateType_1 = require("./lib/GraphQLUpdateType");
 exports.GraphQLUpdateType = GraphQLUpdateType_1.default;
 const GraphQLObjectType_1 = require("./lib/GraphQLObjectType");
 exports.GraphQLObjectType = GraphQLObjectType_1.default;
-const GraphQLDateTime_1 = require("./extra/GraphQLDateTime");
-exports.GraphQLDateTime = GraphQLDateTime_1.default;
 const queryOf = (queries) => new GraphQLObjectType_1.default({
     name: 'RootQuery',
     fields: () => queries
@@ -23,7 +21,6 @@ const mutationOf = (mutations) => new GraphQLObjectType_1.default({
     fields: () => mutations
 });
 function default_1(schema, description = 'Powered by EnjoyMonster') {
-    ;
     const query = queryOf(schema.query);
     const mutation = mutationOf(schema.mutation);
     const config = { query, mutation, description };

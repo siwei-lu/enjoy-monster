@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
-const GraphQLDateTime_1 = require("../../../extra/GraphQLDateTime");
+const graphql_iso_date_1 = require("graphql-iso-date");
 const Option_1 = require("./Option");
 const __1 = require("../../..");
 const User_1 = require("../user/User");
@@ -53,12 +53,12 @@ const Question = new __1.GraphQLObjectType({
             description: '创建类型 0: 文档解析, 1: 人工录入',
         },
         createTime: {
-            type: GraphQLDateTime_1.default,
+            type: graphql_iso_date_1.GraphQLDateTime,
             sqlColumn: 'create_time',
             description: '创建时间',
         },
         updateTime: {
-            type: GraphQLDateTime_1.default,
+            type: graphql_iso_date_1.GraphQLDateTime,
             sqlColumn: 'update_time',
             description: '更新时间',
         }

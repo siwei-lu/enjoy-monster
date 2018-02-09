@@ -10,7 +10,7 @@ export default class GraphQLInsertType {
     description: string;
     args: ArgumentType;
     type: any;
-    resolve: (value: any, {[this.__argName]: args}: {}, ctx: any, info: any) => Promise<any>;
+    resolve: (value: any, { [this.__argName]: args }: {}, ctx: any, info: any) => Promise<any>;
     private __argName;
     private __schemaName;
     private __sqlDatabase;

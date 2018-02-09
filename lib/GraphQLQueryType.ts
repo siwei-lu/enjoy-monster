@@ -32,11 +32,11 @@ export default class GraphQLQueryType {
    args: ArgumentType;
    resolve: ResolveType;
    orderBy = args => {
-    if (!args.__sort) {
+    if (!args._sort) {
       return null;
     }
 
-    const [key, value] = args.__sort.split(' ');
+    const [key, value] = args._sort.split(' ');
     return {
       [key]: value.toUpperCase()
     }

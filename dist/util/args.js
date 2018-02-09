@@ -5,11 +5,9 @@ const GraphQLObjectType_1 = require("../lib/GraphQLObjectType");
 class Args {
     get sortArg() {
         return {
-            __sort: {
+            _sort: {
                 type: graphql_1.GraphQLString,
-                resolve: (table, params) => {
-                    return `ORDER BY ${table}.${params}`;
-                }
+                resolve: (table, params) => `ORDER BY ${table}.${params}`
             }
         };
     }

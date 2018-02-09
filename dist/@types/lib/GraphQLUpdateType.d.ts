@@ -9,7 +9,7 @@ export default class GraphQLUpdateType {
     description: string;
     args: ArgumentType;
     type: any;
-    resolve: (value: any, {newValue, ...args}: {
+    resolve: (value: any, { newValue, ...args }: {
         [x: string]: any;
         newValue: any;
     }, ctx: any, info: any) => Promise<any>;
