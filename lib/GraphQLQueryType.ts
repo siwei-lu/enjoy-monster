@@ -22,8 +22,12 @@ export type ResolveType = (parent: any, args: ArgumentType, context: any, resolv
 const resolve = (parent, args: ArgumentType, context: any, resolveInfo: GraphQLResolveInfo) => {
   const type = typeUtil.originalTypeOf(resolveInfo.returnType);
   const knex = knexOf(context, type._typeConfig.sqlDatabase);
-  return joinMonster(resolveInfo, context, async sql => (await knex.raw(sql))[0],
-  { dialect: 'mysql' });
+  return joinMonster(
+    resolveInfo,
+    context,
+    async sql => (await knex.raw(sql))[0],
+    { dialect: 'mysql' }
+  );
 };
 
 export default class GraphQLQueryType {
@@ -31,6 +35,7 @@ export default class GraphQLQueryType {
    where: WhereType;
    args: ArgumentType;
    resolve: ResolveType;
+
    orderBy = args => {
     if (!args._sort) {
       return null;
@@ -77,7 +82,7 @@ export default class GraphQLQueryType {
         }
 
         if (val instanceof Array) {
-          clause += ` and ${table}.${key} in ${escape(val)}`
+          clause += ` and ${table}.${key} in (${escape(val)})`
         } else {
           clause += ` and ${table}.${key} = ${escape(val)}`
         }
