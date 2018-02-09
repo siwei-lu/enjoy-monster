@@ -19,7 +19,7 @@ const mutationOf = (mutations: any) =>
     fields: () => mutations
   });
 
-export default function (schema: any, description = 'Powered by EnjoyMonster') {;
+export default function (schema: any, description = 'Powered by EnjoyMonster') {
   const query = queryOf(schema.query);
   const mutation = mutationOf(schema.mutation);
   const config: any = { query, mutation, description };
@@ -27,9 +27,9 @@ export default function (schema: any, description = 'Powered by EnjoyMonster') {
 }
 
 export {
-  GraphQLQueryType, 
+  GraphQLQueryType,
   GraphQLInsertType,
-  GraphQLUpdateType, 
+  GraphQLUpdateType,
   GraphQLObjectType,
 };
 
