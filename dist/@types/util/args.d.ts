@@ -7,7 +7,7 @@ export declare type ArgumentType = {
 };
 export declare class Args {
     readonly sortArg: {
-        __sort: {
+        _sort: {
             type: any;
             resolve: (table: any, params: any) => string;
         };

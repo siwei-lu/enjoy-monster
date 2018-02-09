@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
-const GraphQLDateTime_1 = require("../../../extra/GraphQLDateTime");
+const graphql_iso_date_1 = require("graphql-iso-date");
 const __1 = require("../../..");
 const Question_1 = require("../question/Question");
 const User = new __1.GraphQLObjectType({
@@ -14,12 +14,12 @@ const User = new __1.GraphQLObjectType({
         id: { type: graphql_1.GraphQLInt, isArg: true },
         name: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
         createTime: {
-            type: GraphQLDateTime_1.default,
+            type: graphql_iso_date_1.GraphQLDateTime,
             sqlColumn: 'create_time',
             description: '创建时间',
         },
         updateTime: {
-            type: GraphQLDateTime_1.default,
+            type: graphql_iso_date_1.GraphQLDateTime,
             sqlColumn: 'update_time',
             description: '更新时间',
         }

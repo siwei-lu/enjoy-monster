@@ -13,9 +13,10 @@ const resolve = (parent, args, context, resolveInfo) => {
 class GraphQLQueryType {
     constructor(type, args = (args) => args) {
         this.orderBy = args => {
-            if (!args.__sort)
+            if (!args._sort) {
                 return null;
-            const [key, value] = args.__sort.split(' ');
+            }
+            const [key, value] = args._sort.split(' ');
             return {
                 [key]: value.toUpperCase()
             };
@@ -45,8 +46,9 @@ class GraphQLQueryType {
             let clause = '1=1';
             Object.keys(conditions).forEach(key => {
                 const val = conditions[key];
-                if (val === null || val === undefined)
+                if (val === null || val === undefined) {
                     return;
+                }
                 if (val instanceof Array) {
                     clause += ` and ${table}.${key} in ${sqlstring_1.escape(val)}`;
                 }

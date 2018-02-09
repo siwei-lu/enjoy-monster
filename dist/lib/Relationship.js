@@ -23,15 +23,16 @@ exports.hasMany = (type, config) => {
         description: config.description || '',
         args: args_1.default.of(listType),
         orderBy: args => {
-            if (!args.__sort)
+            if (!args._sort) {
                 return null;
-            const [key, value] = args.__sort.split(' ');
+            }
+            const [key, value] = args._sort.split(' ');
             return {
                 [key]: value.toUpperCase()
             };
         },
         sqlJoin: (fromTable, toTable, _a) => {
-            var { __sort } = _a, args = __rest(_a, ["__sort"]);
+            var { _sort } = _a, args = __rest(_a, ["_sort"]);
             let clause = `${fromTable}.${config.thisKey} = ${toTable}.${config.foreignKey || 'id'}`;
             Object.entries(args).forEach(([key, value]) => {
                 value = isNaN(value) ? `'${value}'` : value;

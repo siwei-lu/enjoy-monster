@@ -21,7 +21,7 @@ export default function handle(type: GraphQLOutputType, parent, args, context, i
   if (type instanceof GraphQLObjectType) {
     const result = {};
     Object.entries(type.getFields())
-      .filter(([name]) => parent[name])
+      .filter(([name]) => typeof parent[name] !== 'undefined')
       .forEach(([name, field]) => {
         const value = field.type instanceof GraphQLScalarType
           ? parent[name]

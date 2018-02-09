@@ -11,20 +11,18 @@ export type ArgumentType = {
 export class Args {
   get sortArg() {
     return {
-      __sort: {
+      _sort: {
         type: GraphQLString,
-        resolve: (table, params) => {
-          return `ORDER BY ${table}.${params}`;
-        }
+        resolve: (table, params) => `ORDER BY ${table}.${params}`
       }
     }
   }
-  
+
   of(type: GraphQLOutputType) {
     if (type instanceof GraphQLList) {
       return {
         ...this.of(type.ofType),
-        ...this.sortArg       
+        ...this.sortArg
       }
     }
 

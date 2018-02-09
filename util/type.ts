@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLList, GraphQLObjectType, GraphQLOutputType, GraphQLInputType, GraphQLInputObjectType } from 'graphql';
 
 export class Type {
-  private __insertTypes: { [name: string] : GraphQLInputType } = {};
+  private __insertTypes: { [name: string]: GraphQLInputType } = {};
   private __updateTypes: { [name: string]: GraphQLInputType } = {};
 
   originalTypeOf(type: GraphQLOutputType) {
@@ -11,7 +11,7 @@ export class Type {
 
     return type;
   }
-  
+
   structureOf(type: GraphQLOutputType) {
     let isNonNull = false;
     let isArray = false;
